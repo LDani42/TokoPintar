@@ -4,6 +4,7 @@ Scoreboard and progress display components for Toko Pintar application.
 import streamlit as st
 import pandas as pd
 from utils.config import get_config
+from utils.i18n import tr
 
 def display_score_sidebar():
     """Display the player's score and stats in the sidebar."""
@@ -11,18 +12,18 @@ def display_score_sidebar():
     st.sidebar.markdown(f"### {st.session_state.player_name}'s Stats")
     
     total_score = st.session_state.total_score if hasattr(st.session_state, 'total_score') else 0
-    st.sidebar.markdown(f'<p class="score-text">Score: {total_score:,}</p>', unsafe_allow_html=True)
+    st.sidebar.markdown(f'<p class="score-text">{tr("score")}: {total_score:,}</p>', unsafe_allow_html=True)
     
     # Shop level
     shop_level = st.session_state.shop_level if hasattr(st.session_state, 'shop_level') else 1
     max_level = 5
-    st.sidebar.markdown(f"**Shop Level:** {shop_level}/{max_level}")
+    st.sidebar.markdown(f"**{tr('shop_level')}:** {shop_level}/{max_level}")
     st.sidebar.progress(shop_level / max_level)
     
     # Show skill levels
     if hasattr(st.session_state, 'skill_levels'):
         st.sidebar.markdown("---")
-        st.sidebar.markdown("### Skills Overview")
+        st.sidebar.markdown("### {tr('skills_overview')}")
         
         from utils.skills import get_skill_name, get_skill_icon
         
@@ -43,14 +44,14 @@ def display_game_results(results):
     Args:
         results (dict): Game results including score, skill updates, etc.
     """
-    st.markdown("### Game Results")
+    st.markdown(f"### {tr('game_results')}")
     
     # Show score
-    st.markdown(f'<p class="score-text">Score: {results["score"]} points</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="score-text">{tr("score")}: {results["score"]} {tr("points")}</p>', unsafe_allow_html=True)
     
     # Show skill improvements
     if "updated_skills" in results and results["updated_skills"]:
-        st.markdown("#### Skill Improvements")
+        st.markdown(f"#### {tr('skill_improvements')}")
         
         from utils.skills import get_skill_name, get_skill_icon
         lang = get_config("app.default_language") or "en"
@@ -63,7 +64,7 @@ def display_game_results(results):
     
     # Show new achievements
     if "new_achievements" in results and results["new_achievements"]:
-        st.markdown("#### New Achievements")
+        st.markdown(f"#### {tr('new_achievements')}")
         st.balloons()
         
         for achievement in results["new_achievements"]:
@@ -75,26 +76,26 @@ def display_game_results(results):
             """, unsafe_allow_html=True)
     
     # Show total score
-    st.markdown(f"**Total Score:** {results['total_score']:,}")
+    st.markdown(f"**{tr('total_score')}: {results['total_score']:,}")
     
     # Shop level update
     if "old_shop_level" in results and results["old_shop_level"] != results["shop_level"]:
-        st.success(f"Congratulations! Your shop has been upgraded to Level {results['shop_level']}!")
+        st.success(tr('shop_upgraded', shop_level=results['shop_level']))
 
 def display_game_history_table():
     """Display game history in a table format."""
     if not hasattr(st.session_state, 'game_history') or not st.session_state.game_history:
-        st.info("No game history yet. Play some games to see your progress!")
+        st.info(tr('no_game_history'))
         return
     
     # Game name mapping
     game_name_map = {
-        "inventory_game": "Inventory Counting",
-        "change_making": "Change Making",
-        "margin_calculator": "Margin Calculator",
-        "customer_service": "Customer Service",
-        "cash_reconciliation": "Cash Reconciliation",
-        "simple_accounting": "Simple Accounting"
+        "inventory_game": tr('inventory_game'),
+        "change_making": tr('change_making'),
+        "margin_calculator": tr('margin_calculator'),
+        "customer_service": tr('customer_service'),
+        "cash_reconciliation": tr('cash_reconciliation'),
+        "simple_accounting": tr('simple_accounting')
     }
     
     # Create DataFrame for display
@@ -104,10 +105,10 @@ def display_game_history_table():
     display_data = []
     for game in history:
         display_data.append({
-            "Game": game_name_map.get(game["game_id"], game["game_id"]),
-            "Score": game["score"],
-            "Date": game["timestamp"].split()[0],
-            "Time": game["timestamp"].split()[1]
+            tr('game'): game_name_map.get(game["game_id"], game["game_id"]),
+            tr('score'): game["score"],
+            tr('date'): game["timestamp"].split()[0],
+            tr('time'): game["timestamp"].split()[1]
         })
     
     # Create and display the table
@@ -119,7 +120,7 @@ def display_skill_progress_chart():
     import matplotlib.pyplot as plt
     
     if not hasattr(st.session_state, 'game_history') or len(st.session_state.game_history) < 2:
-        st.info("Play more games to see your skill progress chart!")
+        st.info(tr('play_more_games'))
         return
     
     # Get skill level snapshots from game history
@@ -142,8 +143,8 @@ def display_skill_progress_chart():
     bars = ax.bar(labels, values, color='#1E88E5')
     
     # Add some styling
-    ax.set_ylabel('Skill Level')
-    ax.set_title('Your Current Skills')
+    ax.set_ylabel(tr('skill_level'))
+    ax.set_title(tr('your_current_skills'))
     ax.set_ylim(0, 5)  # Assuming max skill level is 5
     
     # Add value labels on top of bars
@@ -192,29 +193,29 @@ def display_educational_tip(category):
     # Fallback to simple tips if no advanced tips available
     simple_tips = {
         "inventory": [
-            "Regular inventory counts help prevent stockouts and theft.",
-            "First-In-First-Out (FIFO) method helps manage perishable goods.",
-            "Group similar items together when counting for efficiency."
+            tr('inventory_tip1'),
+            tr('inventory_tip2'),
+            tr('inventory_tip3')
         ],
         "cash": [
-            "Count money twice to ensure accuracy.",
-            "Always provide a receipt for transparency.",
-            "Keep large bills separate to avoid confusion."
+            tr('cash_tip1'),
+            tr('cash_tip2'),
+            tr('cash_tip3')
         ],
         "pricing": [
-            "Consider your costs, competition, and customer willingness to pay.",
-            "Different products can have different margin targets.",
-            "Review and adjust prices regularly based on costs and market."
+            tr('pricing_tip1'),
+            tr('pricing_tip2'),
+            tr('pricing_tip3')
         ],
         "customer": [
-            "Remember regular customers' preferences to provide better service.",
-            "Listening is as important as speaking in customer service.",
-            "A genuine smile creates a positive shopping experience."
+            tr('customer_tip1'),
+            tr('customer_tip2'),
+            tr('customer_tip3')
         ],
         "bookkeeping": [
-            "Keep business and personal finances separate.",
-            "Record transactions daily for accurate records.",
-            "Review your finances weekly to spot trends early."
+            tr('bookkeeping_tip1'),
+            tr('bookkeeping_tip2'),
+            tr('bookkeeping_tip3')
         ]
     }
     
@@ -225,13 +226,13 @@ def display_educational_tip(category):
         st.markdown(f"""
         <div style="background-color: #E3F2FD; border-left: 4px solid #42A5F5; 
              padding: 15px; margin: 15px 0; border-radius: 4px;">
-            <strong>Tip:</strong> {tip_content}
+            <strong>{tr('tip')}:</strong> {tip_content}
         </div>
         """, unsafe_allow_html=True)
         
 def display_simple_calculator():
     """Display a simple calculator for basic operations."""
-    with st.expander("Simple Calculator"):
+    with st.expander(tr('simple_calculator')):
         st.markdown("""
         <style>
         .calculator {
@@ -273,7 +274,7 @@ def display_simple_calculator():
             
         with col2:
             # Clear button
-            if st.button("Clear", key="calc_clear"):
+            if st.button(tr('clear'), key="calc_clear"):
                 st.session_state.calc_num1 = ""
                 st.session_state.calc_num2 = ""
                 st.session_state.calc_op = ""

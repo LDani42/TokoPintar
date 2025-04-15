@@ -5,6 +5,7 @@ Provides standardized UI components across games.
 import streamlit as st
 import random
 from utils.config import get_config, get_product_emoji
+from utils.i18n import tr
 
 def display_product_card(product, lang="en"):
     """Display a product card with consistent styling.
@@ -29,7 +30,7 @@ def display_product_card(product, lang="en"):
     
     # Add additional product details if available
     if "buy_price" in product:
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
+        buy_price_text = tr('buy_price_label')
         html += f"""
         <div style='display: flex; justify-content: space-between; margin-bottom: 10px;'>
             <span style='font-weight: bold;'>{buy_price_text}:</span>
@@ -38,7 +39,7 @@ def display_product_card(product, lang="en"):
         """
     
     if "sell_price" in product:
-        sell_price_text = "Sell price" if lang == "en" else "Harga jual"
+        sell_price_text = tr('sell_price_label')
         html += f"""
         <div style='display: flex; justify-content: space-between; margin-bottom: 10px;'>
             <span style='font-weight: bold;'>{sell_price_text}:</span>
@@ -47,7 +48,7 @@ def display_product_card(product, lang="en"):
         """
     
     if "stock" in product:
-        stock_text = "Stock" if lang == "en" else "Stok"
+        stock_text = tr('stock_label')
         html += f"""
         <div style='display: flex; justify-content: space-between; margin-bottom: 10px;'>
             <span style='font-weight: bold;'>{stock_text}:</span>
@@ -76,7 +77,7 @@ def display_calculator_input(label, min_value=0, max_value=1000000, step=100, pr
     """
     st.markdown("<div style='background-color: #f1f8e9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>", unsafe_allow_html=True)
     
-    st.markdown(f"<h4>{label}</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h4>{tr('calculator_input_label')} {label}</h4>", unsafe_allow_html=True)
     
     # Calculator input with currency prefix
     col1, col2 = st.columns([1, 4])
@@ -86,7 +87,7 @@ def display_calculator_input(label, min_value=0, max_value=1000000, step=100, pr
     
     with col2:
         value = st.number_input(
-            "Value",
+            tr('value_label'),
             min_value=min_value,
             max_value=max_value,
             value=0,
@@ -115,8 +116,8 @@ def display_result_container(is_correct, correct_answer, user_answer, format_typ
     """
     if is_correct:
         # Celebration for correct answer
-        correct_text = "Correct" if lang == "en" else "Benar"
-        answer_text = "The correct answer is" if lang == "en" else "Jawaban yang benar adalah"
+        correct_text = tr('correct_text')
+        answer_text = tr('correct_answer_text')
         
         # Format answer based on format_type
         if format_type == "currency":
@@ -136,8 +137,8 @@ def display_result_container(is_correct, correct_answer, user_answer, format_typ
         
     else:
         # Display incorrect answer message
-        incorrect_text = "Incorrect" if lang == "en" else "Salah"
-        correct_text = "The correct answer is" if lang == "en" else "Jawaban yang benar adalah"
+        incorrect_text = tr('incorrect_text')
+        correct_text = tr('correct_answer_text')
         
         # Format answers based on format_type
         if format_type == "currency":
@@ -150,7 +151,7 @@ def display_result_container(is_correct, correct_answer, user_answer, format_typ
             formatted_correct = f"{correct_answer}"
             formatted_user = f"{user_answer}"
         
-        your_answer = "Your answer" if lang == "en" else "Jawaban Anda"
+        your_answer = tr('your_answer_text')
         
         st.markdown(f"""
         <div style="background-color: #FFEBEE; border-left: 4px solid #F44336; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
@@ -167,7 +168,7 @@ def display_accuracy_gauge(accuracy, lang="en"):
         accuracy (float): Accuracy percentage (0-100)
         lang (str): Language code
     """
-    accuracy_text = "Accuracy" if lang == "en" else "Akurasi"
+    accuracy_text = tr('accuracy_text')
     
     st.markdown(f"""
     <div style="margin: 20px 0;">

@@ -6,6 +6,7 @@ import streamlit as st
 from datetime import datetime
 from utils.config import get_config
 from utils.skills import get_skill_name, get_skill_icon
+from utils.i18n import tr
 
 def generate_certificate(path_id, milestone_level):
     """Generate a certificate for a completed learning path milestone.
@@ -162,11 +163,11 @@ def display_certificate_preview(path_id, milestone_level):
         achievements = skill_achievements[path_id][closest_level].get(lang, skill_achievements[path_id][closest_level]["en"])
     
     # Translate certificate text based on language
-    certificate_title = "Certificate of Achievement" if lang == "en" else "Sertifikat Prestasi"
-    certifies_that = "This certifies that" if lang == "en" else "Menyatakan bahwa"
-    has_completed = "has successfully completed" if lang == "en" else "telah berhasil menyelesaikan"
-    issued_on = "Issued on" if lang == "en" else "Diterbitkan pada"
-    skills_acquired = "Skills Acquired" if lang == "en" else "Keterampilan yang Diperoleh"
+    certificate_title = tr('certificate_of_achievement')
+    certifies_that = tr('certifies_that')
+    has_completed = tr('has_completed')
+    issued_on = tr('issued_on')
+    skills_acquired = tr('skills_acquired')
     
     # Create more visually appealing certificate with achievements
     st.markdown(f"""
@@ -180,7 +181,7 @@ def display_certificate_preview(path_id, milestone_level):
              background: linear-gradient(135deg, {colors['primary']}, {colors['accent']}); 
              padding: 8px 25px; border: 2px solid white; 
              border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-            <span style="color: white; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">CERTIFICATE</span>
+            <span style="color: white; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">{tr('certificate')}</span>
         </div>
         
         <!-- Border Design -->
@@ -244,26 +245,26 @@ def display_certificate_preview(path_id, milestone_level):
         <div style="display: flex; justify-content: space-between; margin-top: 30px; padding: 0 20px;">
             <div style="text-align: center;">
                 <div style="border-top: 1px solid #999; width: 150px; padding-top: 5px; 
-                     color: #666; font-style: italic;">Student</div>
+                     color: #666; font-style: italic;">{tr('student')}</div>
             </div>
             
             <div style="text-align: center;">
                 <div style="border-top: 1px solid #999; width: 150px; padding-top: 5px; 
-                     color: #666; font-style: italic;">Toko Pintar</div>
+                     color: #666; font-style: italic;">{tr('toko_pintar')}</div>
             </div>
         </div>
         
         <!-- Certificate ID -->
         <div style="margin-top: 20px; font-size: 0.8rem; color: #999;">
-            Certificate ID: {certificate["id"]}
+            {tr('certificate_id')}: {certificate["id"]}
         </div>
     </div>
     """, unsafe_allow_html=True)
     
     # Download button (mock for now)
-    download_text = "Download Certificate" if lang == "en" else "Unduh Sertifikat"
+    download_text = tr('download_certificate')
     if st.button(download_text, key=f"download_{certificate['id']}"):
-        st.success("Certificate downloaded successfully!")
+        st.success(tr('certificate_downloaded'))
 
 def get_earned_certificates():
     """Get all certificates earned by the player.
@@ -283,13 +284,13 @@ def show_certificates_tab():
     certificates = get_earned_certificates()
     
     if not certificates:
-        no_cert_text = "You haven't earned any certificates yet" if lang == "en" else "Anda belum mendapatkan sertifikat apa pun"
-        complete_path_text = "Complete learning paths to earn skill certificates" if lang == "en" else "Selesaikan jalur pembelajaran untuk mendapatkan sertifikat keterampilan"
+        no_cert_text = tr('no_certificates_yet')
+        complete_path_text = tr('complete_paths_to_earn_certificates')
         st.info(f"{no_cert_text}. {complete_path_text}!")
         return
     
     # Header
-    certificates_text = "Your Skill Certificates" if lang == "en" else "Sertifikat Keterampilan Anda"
+    certificates_text = tr('your_skill_certificates')
     st.markdown(f"## {certificates_text}")
     
     # Display certificates in a grid
@@ -307,13 +308,13 @@ def show_certificates_tab():
                 <div style="font-size: 1.5rem; margin-bottom: 5px;">{certificate["icon"]}</div>
                 <h3 style="margin: 0 0 5px 0; font-size: 1rem;">{certificate["title"]}</h3>
                 <p style="color: #666; font-size: 0.8rem; margin: 0;">
-                    Issued: {certificate["issue_date"]}
+                    {tr('issued')}: {certificate["issue_date"]}
                 </p>
             </div>
             """, unsafe_allow_html=True)
             
             # View certificate button
-            view_text = "View Certificate" if lang == "en" else "Lihat Sertifikat"
+            view_text = tr('view_certificate')
             if st.button(view_text, key=f"view_{cert_id}"):
                 st.session_state.selected_certificate = cert_id
                 st.rerun()
@@ -326,7 +327,7 @@ def show_certificate_details(certificate_id):
     """
     certificates = get_earned_certificates()
     if certificate_id not in certificates:
-        st.error("Certificate not found!")
+        st.error(tr('certificate_not_found'))
         return
     
     certificate = certificates[certificate_id]
@@ -337,7 +338,7 @@ def show_certificate_details(certificate_id):
     display_certificate_preview(certificate["path_id"], certificate["milestone_level"])
     
     # Back button
-    back_text = "Back to Certificates" if lang == "en" else "Kembali ke Sertifikat"
+    back_text = tr('back_to_certificates')
     if st.button(back_text, key="back_to_certificates"):
         st.session_state.selected_certificate = None
         st.rerun()

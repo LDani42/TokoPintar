@@ -8,6 +8,7 @@ from utils.config import get_config
 from utils.skills import update_skills
 from components.scoreboard import display_educational_tip
 from utils.db import db
+from utils.i18n import tr
 
 def initialize_margin_challenge(level=1):
     """Initialize a margin calculation challenge based on level.
@@ -209,7 +210,7 @@ def margin_calculator_game():
     # Force initialization at the start of the game function
     # This must happen before any other code that uses the session state
     if "margin_calculator" not in st.session_state:
-        st.info("Initializing margin calculator game...")
+        st.info(tr('margin_game_initializing'))
         initialize_margin_challenge(1)
         st.rerun()
         return
@@ -255,11 +256,8 @@ def margin_calculator_game():
     """, unsafe_allow_html=True)
     
     # Game title
-    title = "Margin Calculator Challenge" if lang == "en" else "Tantangan Kalkulator Margin"
-    description = "Calculate prices, margins, and profits to boost your business." if lang == "en" else "Hitung harga, margin, dan keuntungan untuk meningkatkan bisnis Anda."
-    
-    st.markdown(f'<p class="game-title">{title}</p>', unsafe_allow_html=True)
-    st.write(description)
+    st.markdown(f'<p class="game-title">{tr("margin_calculator_title")}</p>', unsafe_allow_html=True)
+    st.write(tr("margin_calculator_description"))
     
     # Display educational tip
     display_educational_tip("pricing")
@@ -284,7 +282,7 @@ def margin_calculator_game():
         max_available_level = min(5, max(1, int(skill_level) + 1))
         
         # Display level selection UI
-        st.markdown("### Select Difficulty Level")
+        st.markdown(f"### {tr('select_difficulty_level')}")
         
         # Create level selection cards
         cols = st.columns(5)
@@ -365,34 +363,26 @@ def margin_calculator_game():
             challenge["submitted"] = True
             st.rerun()
     
-    # Display level header with colorful badge and description
+    # Level badge and description
     level_colors = {
-        1: "#4CAF50",  # Green for beginner
-        2: "#2196F3",  # Blue for easy
-        3: "#FF9800",  # Orange for medium
-        4: "#9C27B0",  # Purple for hard
-        5: "#F44336"   # Red for expert
+        1: "#4CAF50",
+        2: "#2196F3",
+        3: "#FF9800",
+        4: "#9C27B0",
+        5: "#F44336"
     }
-    
     level_color = level_colors.get(level, "#7E57C2")
-    level_text = f"Level {level}" if lang == "en" else f"Level {level}"
-    
-    # Get level description
     level_desc = challenge.get("level_description", {}).get(lang, "")
     level_tips = challenge.get("level_tips", {}).get(lang, "")
-    
-    # Display level badge and description
     st.markdown(f"""
-    <div style="display: flex; align-items: center; margin-bottom: 15px;">
-        <div style="background-color: {level_color}; color: white; padding: 5px 10px; border-radius: 15px; font-weight: bold; margin-right: 10px;">
-            {level_text}
+    <div style='display: flex; align-items: center; margin-bottom: 15px;'>
+        <div style='background-color: {level_color}; color: white; padding: 5px 10px; border-radius: 15px; font-weight: bold; margin-right: 10px;'>
+            {tr('level')} {level}
         </div>
-        <div style="font-size: 1.1em;">{level_desc}</div>
+        <div style='font-size: 1.1em;'>{level_desc}</div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Display tips in an info box
-    st.info(f"💡 **Tip:** {level_tips}")
+    st.info(f"💡 **{tr('tip')}:** {level_tips}")
     
     # Display the challenge in a more visual way
     from utils.config import get_product_emoji
@@ -419,8 +409,8 @@ def margin_calculator_game():
         if get_config("debug.enabled"):
             st.write(f"Debug - Buy price: {buy_price}, Margin: {target_margin}%, Expected: {expected_answer}, Rounded: {rounded_answer}")
         
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
-        target_margin_text = "Target margin" if lang == "en" else "Target margin"
+        buy_price_text = tr('buy_price')
+        target_margin_text = tr('target_margin')
         
         # Display product info in product card
         st.markdown(f"""
@@ -436,7 +426,7 @@ def margin_calculator_game():
         """, unsafe_allow_html=True)
         
         # Challenge description
-        task_text = "You need to set a selling price that achieves the target margin. Round to the nearest 100 Rupiah." if lang == "en" else "Anda perlu menetapkan harga jual yang mencapai target margin. Bulatkan ke 100 Rupiah terdekat."
+        task_text = tr('set_selling_price_task')
         
         # Show formula guidance for lower levels
         if level <= 2:
@@ -447,7 +437,7 @@ def margin_calculator_game():
             <div style='background-color: #e3f2fd; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>
                 <p style='font-weight: bold;'>Formula:</p>
                 <div class='math-formula'>
-                    Selling Price = Buy Price × (1 + Margin/100)
+                    Selling Price = Buy Price × (1 + Margin%/100)
                 </div>
                 <div class='math-formula'>
                     Selling Price = {buy_price:,} × (1 + {target_margin}/100) = {buy_price:,} × {1 + target_margin/100:.2f}
@@ -463,7 +453,7 @@ def margin_calculator_game():
         # Visual calculator-style input
         st.markdown("<div style='background-color: #f1f8e9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>", unsafe_allow_html=True)
         
-        input_label = "What selling price will give you this margin?" if lang == "en" else "Berapa harga jual yang akan memberi Anda margin ini?"
+        input_label = tr('selling_price_input_label')
         st.markdown(f"<h4>{input_label}</h4>", unsafe_allow_html=True)
         
         # --- Quick Calculator: placed directly below the input label ---
@@ -508,8 +498,8 @@ def margin_calculator_game():
         if get_config("debug.enabled"):
             st.write(f"Debug - Buy: {buy_price}, Sell: {sell_price}, Diff: {diff}, Margin: {expected_margin}%, Rounded: {rounded_margin}%")
         
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
-        sell_price_text = "Sell price" if lang == "en" else "Harga jual"
+        buy_price_text = tr('buy_price')
+        sell_price_text = tr('sell_price')
         
         # Display product info in product card
         st.markdown(f"""
@@ -524,7 +514,7 @@ def margin_calculator_game():
         </div>
         """, unsafe_allow_html=True)
         
-        task_text = "Calculate the margin percentage. Round to the nearest whole number." if lang == "en" else "Hitung persentase margin. Bulatkan ke angka bulat terdekat."
+        task_text = tr('margin_percent_task')
         
         # Show formula guidance for lower levels
         if level <= 2:
@@ -554,7 +544,7 @@ def margin_calculator_game():
         # Visual percentage slider
         st.markdown("<div style='background-color: #f1f8e9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>", unsafe_allow_html=True)
         
-        input_label = "What is the margin percentage?" if lang == "en" else "Berapa persentase margin?"
+        input_label = tr('margin_percent_input_label')
         st.markdown(f"<h4>{input_label}</h4>", unsafe_allow_html=True)
         
         # Use slider for more intuitive percentage selection
@@ -593,9 +583,9 @@ def margin_calculator_game():
         if get_config("debug.enabled"):
             st.write(f"Debug - Buy: {buy_price}, Sell: {sell_price}, Profit per item: {profit_per_item}, Quantity: {quantity}, Total profit: {expected_profit}")
         
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
-        sell_price_text = "Sell price" if lang == "en" else "Harga jual"
-        quantity_text = "Quantity sold" if lang == "en" else "Jumlah terjual"
+        buy_price_text = tr('buy_price')
+        sell_price_text = tr('sell_price')
+        quantity_text = tr('quantity_sold')
         
         # Display product info in product card with quantity visualization
         st.markdown(f"""
@@ -636,7 +626,7 @@ def margin_calculator_game():
         st.markdown(item_html, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        task_text = "Calculate the total profit from this sale." if lang == "en" else "Hitung total keuntungan dari penjualan ini."
+        task_text = tr('profit_task')
         
         # Show formula guidance for lower levels
         if level <= 2:
@@ -663,7 +653,7 @@ def margin_calculator_game():
         # Visual calculator-style input
         st.markdown("<div style='background-color: #f1f8e9; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>", unsafe_allow_html=True)
         
-        input_label = "What is the total profit?" if lang == "en" else "Berapa total keuntungan?"
+        input_label = tr('profit_input_label')
         st.markdown(f"<h4>{input_label}</h4>", unsafe_allow_html=True)
         
         # Calculator input with Rp prefix
@@ -688,19 +678,20 @@ def margin_calculator_game():
     elif challenge_type == "find_breakeven":
         fixed_cost = challenge["fixed_cost"]
         
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
-        sell_price_text = "Sell price" if lang == "en" else "Harga jual"
-        fixed_cost_text = "Monthly fixed costs" if lang == "en" else "Biaya tetap bulanan"
+        buy_price_text = tr('buy_price')
+        sell_price_text = tr('sell_price')
+        fixed_cost_text = tr('fixed_cost')
         
         st.write(f"**{buy_price_text}:** Rp {product['buy_price']:,}")
         st.write(f"**{sell_price_text}:** Rp {product['sell_price']:,}")
         st.write(f"**{fixed_cost_text}:** Rp {fixed_cost:,}")
         
-        task_text = "Calculate how many units you need to sell to break even (cover your fixed costs)." if lang == "en" else "Hitung berapa unit yang perlu Anda jual untuk mencapai titik impas (menutupi biaya tetap Anda)."
+        task_text = tr('breakeven_task')
+        
         st.warning(task_text)
         
         # Input for break-even units
-        input_label = "How many units to break even?" if lang == "en" else "Berapa unit untuk mencapai titik impas?"
+        input_label = tr('breakeven_input_label')
         answer = st.number_input(
             input_label,
             min_value=0,
@@ -714,10 +705,10 @@ def margin_calculator_game():
         current_demand = challenge["current_demand"]
         elasticity = challenge["elasticity"]
         
-        buy_price_text = "Buy price" if lang == "en" else "Harga beli"
-        current_price_text = "Current price" if lang == "en" else "Harga saat ini"
-        current_demand_text = "Current monthly demand" if lang == "en" else "Permintaan bulanan saat ini"
-        elasticity_text = "Price elasticity" if lang == "en" else "Elastisitas harga"
+        buy_price_text = tr('buy_price')
+        current_price_text = tr('current_price')
+        current_demand_text = tr('current_monthly_demand')
+        elasticity_text = tr('price_elasticity')
         
         st.write(f"**{buy_price_text}:** Rp {product['buy_price']:,}")
         st.write(f"**{current_price_text}:** Rp {product['sell_price']:,}")
@@ -732,11 +723,12 @@ def margin_calculator_game():
         """
         st.info(elasticity_explanation)
         
-        task_text = "Find the optimal price to maximize profit. Round to the nearest 100 Rupiah." if lang == "en" else "Temukan harga optimal untuk memaksimalkan keuntungan. Bulatkan ke 100 Rupiah terdekat."
+        task_text = tr('optimal_price_task')
+        
         st.warning(task_text)
         
         # Input for optimal price
-        input_label = "What is the optimal price?" if lang == "en" else "Berapa harga optimal?"
+        input_label = tr('optimal_price_input_label')
         answer = st.number_input(
             input_label,
             min_value=product["buy_price"],
@@ -747,9 +739,9 @@ def margin_calculator_game():
         challenge["user_answer"] = answer
     
     # Submit button with enhanced styling
-    check_text = "Check My Answer" if lang == "en" else "Periksa Jawaban Saya"
+    submit_text = tr('submit_button')
     check_button_clicked = st.button(
-        check_text,
+        submit_text,
         key="check_margin_answer",
         type="primary",
     )
@@ -825,7 +817,7 @@ def margin_calculator_game():
         # Display different results based on correctness
         if is_correct:
             # Celebration for correct answer
-            correct_text = "Correct" if lang == "en" else "Benar"
+            correct_text = tr('correct_feedback')
             answer_text = "The correct answer is" if lang == "en" else "Jawaban yang benar adalah"
             
             # Format answer based on challenge type
@@ -905,7 +897,7 @@ def margin_calculator_game():
                 """, unsafe_allow_html=True)
         else:
             # Display incorrect answer message
-            incorrect_text = "Incorrect" if lang == "en" else "Salah"
+            incorrect_text = tr('incorrect_feedback')
             correct_text = "The correct answer is" if lang == "en" else "Jawaban yang benar adalah"
             
             # Format answers based on challenge type
@@ -1266,8 +1258,8 @@ def get_game_info():
                 "id": "Analisis titik impas"
             },
             5: {
-                "en": "Advanced pricing with elasticity",
-                "id": "Penetapan harga lanjutan dengan elastisitas"
+                "en": "Advanced pricing strategy with elasticity",
+                "id": "Strategi penetapan harga lanjutan dengan elastisitas"
             }
         },
         "time_limit": {

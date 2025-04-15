@@ -3,6 +3,7 @@ Collapsible sidebar component for Toko Pintar application.
 """
 import streamlit as st
 from utils.config import get_config, generate_widget_key
+from utils.i18n import tr
 
 def init_sidebar_state():
     """Initialize sidebar state if not present."""
@@ -243,74 +244,71 @@ def sidebar_quick_navigation():
     """Display quick navigation links in the sidebar."""
     lang = get_config("app.default_language") or "en"
     
-    st.sidebar.title("Toko Pintar")
+    st.sidebar.title(tr("app_name"))
     
     # Use the centralized language selector at the top
     show_language_selector()
     
     # Quick Navigation section - always expanded by default
-    quick_nav_text = "Quick Navigation" if lang == "en" else "Navigasi Cepat"
+    quick_nav_text = tr("quick_navigation")
     
-    # Create an expander that's open by default with a cleaner title (no ### markdown)
     with st.sidebar.expander(quick_nav_text, expanded=True):
         # Game links section
-        games_header = "Games" if lang == "en" else "Permainan"
+        games_header = tr("games")
         st.markdown(f"### {games_header}")
         
         # Game buttons - each with language-specific text and a unique key
-        inventory_text = "🎮 " + ("Inventory Game" if lang == "en" else "Permainan Inventaris")
+        inventory_text = tr("inventory_game")
         if st.button(inventory_text, key=generate_widget_key("button", "sidebar_inventory_game")):
             st.session_state.current_game = "inventory_game"
             st.rerun()
             
-        change_text = "💵 " + ("Change Making" if lang == "en" else "Membuat Kembalian")
+        change_text = tr("change_making")
         if st.button(change_text, key=generate_widget_key("button", "sidebar_change_making")):
             st.session_state.current_game = "change_making"
             st.rerun()
             
-        margin_text = "📊 " + ("Margin Calculator" if lang == "en" else "Kalkulator Margin")
+        margin_text = tr("margin_calculator")
         if st.button(margin_text, key=generate_widget_key("button", "sidebar_margin_calculator")):
             st.session_state.current_game = "margin_calculator"
             st.rerun()
         
         # Skills section
-        skills_header = "Skills" if lang == "en" else "Keahlian"
+        skills_header = tr("skills")
         st.markdown(f"### {skills_header}")
         
         # Define skills with translations
         skills = [
-            ("inventory_management", "📦 " + ("Inventory" if lang == "en" else "Inventaris")),
-            ("cash_handling", "💰 " + ("Cash Handling" if lang == "en" else "Penanganan Kas")),
-            ("pricing_strategy", "💹 " + ("Pricing" if lang == "en" else "Penetapan Harga")),
-            ("customer_relations", "🤝 " + ("Customer" if lang == "en" else "Pelanggan")),
-            ("bookkeeping", "📒 " + ("Bookkeeping" if lang == "en" else "Pembukuan"))
+            ("inventory_management", tr("inventory_management")),
+            ("cash_handling", tr("cash_handling")),
+            ("pricing_strategy", tr("pricing_strategy")),
+            ("customer_relations", tr("customer_relations")),
+            ("bookkeeping", tr("bookkeeping"))
         ]
         
         # Display each skill with unique keys
         for skill_id, skill_name in skills:
             if st.button(skill_name, key=generate_widget_key("button", f"sidebar_skill_{skill_id}")):
-                st.session_state.current_section = "Skills" if lang == "en" else "Keahlian"
+                st.session_state.current_section = tr("skills")
                 st.session_state.selected_skill = skill_id
                 st.rerun()
         
         # Shop section
-        shop_header = "My Shop" if lang == "en" else "Toko Saya"
+        shop_header = tr("my_shop")
         st.markdown(f"### {shop_header}")
         
-        shop_button_text = "🏪 " + ("View Shop" if lang == "en" else "Lihat Toko")
+        shop_button_text = tr("view_shop")
         if st.button(shop_button_text, key=generate_widget_key("button", "sidebar_view_shop")):
-            st.session_state.current_section = "My Shop" if lang == "en" else "Toko Saya"
+            st.session_state.current_section = tr("my_shop")
             st.rerun()
     
     # Settings section
-    settings_text = "Settings" if lang == "en" else "Pengaturan"
-    
-    # Add a header for the settings section
+    settings_text = tr("settings")
     st.sidebar.markdown(f"### ⚙️ {settings_text}")
     
     # Add more settings options
     debug_mode = get_config("debug.enabled")
-    debug_label = "Debug Mode" if lang == "en" else "Mode Debug"
+    debug_label = tr("debug_mode")
     debug_enabled = st.sidebar.checkbox(debug_label, value=debug_mode, key=generate_widget_key("checkbox", "debug_mode_toggle"))
     
     if debug_enabled != debug_mode:

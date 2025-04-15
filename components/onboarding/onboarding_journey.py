@@ -6,6 +6,7 @@ import streamlit as st
 import uuid
 from utils.config import get_config, get_translation
 from datetime import datetime
+from utils.i18n import tr
 
 def show_onboarding_journey():
     """
@@ -375,7 +376,7 @@ def show_onboarding_journey():
     @media (max-width: 768px) {{
         /* Footer title text */
         .onboarding-container::after {{
-            content: 'Toko Pintar';
+            content: '{tr('onboarding_title')}';
             display: block;
             text-align: center;
             font-size: 1.2rem;
@@ -414,7 +415,7 @@ def show_onboarding_journey():
         
         /* Step labels */
         .step-indicator-1::after {{ 
-            content: 'Welcome'; 
+            content: '{tr('onboarding_step_1')}'; 
             display: block; 
             font-size: 0.7rem; 
             color: {('#FF7043' if current_step == 1 else '#666')};
@@ -422,7 +423,7 @@ def show_onboarding_journey():
         }}
         
         .step-indicator-2::after {{ 
-            content: 'Skills'; 
+            content: '{tr('onboarding_step_2')}'; 
             display: block; 
             font-size: 0.7rem; 
             color: {('#FF7043' if current_step == 2 else '#666')};
@@ -430,7 +431,7 @@ def show_onboarding_journey():
         }}
         
         .step-indicator-3::after {{ 
-            content: 'Games'; 
+            content: '{tr('onboarding_step_3')}'; 
             display: block; 
             font-size: 0.7rem; 
             color: {('#FF7043' if current_step == 3 else '#666')};
@@ -438,7 +439,7 @@ def show_onboarding_journey():
         }}
         
         .step-indicator-4::after {{ 
-            content: 'Get Started'; 
+            content: '{tr('onboarding_step_4')}'; 
             display: block; 
             font-size: 0.7rem; 
             color: {('#FF7043' if current_step == 4 else '#666')};
@@ -466,32 +467,32 @@ def get_step_info(step):
     
     step_info = {
         1: {
-            "title": "Welcome" if lang == "en" else "Selamat Datang",
+            "title": tr('onboarding_step_1'),
             "icon": "👋"
         },
         2: {
-            "title": "Skills" if lang == "en" else "Keterampilan",
+            "title": tr('onboarding_step_2'),
             "icon": "🎯"
         },
         3: {
-            "title": "Games" if lang == "en" else "Permainan",
+            "title": tr('onboarding_step_3'),
             "icon": "🎮"
         },
         4: {
-            "title": "Get Started" if lang == "en" else "Mulai",
+            "title": tr('onboarding_step_4'),
             "icon": "🚀"
         }
     }
     
-    return step_info.get(step, {"title": "Unknown Step", "icon": "❓"})
+    return step_info.get(step, {"title": tr('unknown_step'), "icon": "❓"})
 
 def show_onboarding_welcome():
     """Display the welcome screen of the onboarding journey."""
     lang = get_config("app.default_language") or "en"
     
     # Header with animation - with proper translations
-    header_title = "Welcome to Toko Pintar!" if lang == "en" else "Selamat Datang di Toko Pintar!"
-    header_subtitle = "Your journey to becoming a successful shop owner begins here" if lang == "en" else "Perjalanan Anda untuk menjadi pemilik toko yang sukses dimulai di sini"
+    header_title = tr('onboarding_title')
+    header_subtitle = tr('onboarding_subtitle')
     
     st.markdown(f"""
     <div class="onboarding-header">
@@ -501,13 +502,13 @@ def show_onboarding_welcome():
     """, unsafe_allow_html=True)
     
     # Add language selector at the top of the welcome screen
-    st.markdown("### 🌐 Language / Bahasa")
+    st.markdown("### 🌐 " + tr('language_selector'))
     languages = {"en": "English", "id": "Bahasa Indonesia"}
     current_lang = get_config("app.default_language") or "en"
     
     # Create a styled language selector directly in the main content
     selected_lang = st.selectbox(
-        "Select your preferred language:",
+        tr('select_language'),
         options=list(languages.keys()),
         format_func=lambda x: languages[x],
         index=list(languages.keys()).index(current_lang),
@@ -525,16 +526,16 @@ def show_onboarding_welcome():
     
     with col1:
         # Translate all welcome content
-        journey_title = "Your Journey Begins" if lang == "en" else "Perjalanan Anda Dimulai"
-        journey_intro = "Toko Pintar will help you learn essential skills for running a successful small retail shop." if lang == "en" else "Toko Pintar akan membantu Anda mempelajari keterampilan penting untuk menjalankan toko kecil yang sukses."
-        activities_intro = "Through engaging mini-games and activities, you'll master:" if lang == "en" else "Melalui mini-game dan aktivitas yang menarik, Anda akan menguasai:"
+        journey_title = tr('journey_title')
+        journey_intro = tr('journey_intro')
+        activities_intro = tr('activities_intro')
         
         # Skills translations
-        inventory = "Inventory management" if lang == "en" else "Manajemen inventaris"
-        cash = "Cash handling" if lang == "en" else "Penanganan kas"
-        pricing = "Pricing strategies" if lang == "en" else "Strategi penetapan harga"
-        customer = "Customer relations" if lang == "en" else "Hubungan pelanggan"
-        bookkeeping = "Basic bookkeeping" if lang == "en" else "Pembukuan dasar"
+        inventory = tr('inventory_management')
+        cash = tr('cash_handling')
+        pricing = tr('pricing_strategy')
+        customer = tr('customer_relations')
+        bookkeeping = tr('bookkeeping')
         
         st.markdown(f"""
         <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
@@ -553,7 +554,7 @@ def show_onboarding_welcome():
         
     with col2:
         # Character input section - translated
-        shopkeeper_title = "Create Your Shopkeeper" if lang == "en" else "Buat Pemilik Toko Anda"
+        shopkeeper_title = tr('shopkeeper_title')
         
         st.markdown(f"""
         <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
@@ -561,17 +562,17 @@ def show_onboarding_welcome():
         """, unsafe_allow_html=True)
         
         # Name input
-        name_label = "What's your name?" if lang == "en" else "Siapa nama Anda?"
+        name_label = tr('name_label')
         player_name = st.text_input(name_label, key="onboarding_name_input")
         
         # Shop name input
-        shop_label = "What will you call your shop?" if lang == "en" else "Apa nama toko Anda?"
+        shop_label = tr('shop_label')
         shop_name = st.text_input(shop_label, key="onboarding_shop_input")
         
         # Add the Next button directly in the same card for better alignment
         st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)  # Spacing
         
-        next_text = "Next: Skills" if lang == "en" else "Berikutnya: Keterampilan"
+        next_text = tr('next_button')
         
         # Regular Streamlit button but with custom styling
         next_clicked = st.button(next_text, key="welcome_next", use_container_width=True)
@@ -597,8 +598,8 @@ def show_onboarding_skills_intro():
     lang = get_config("app.default_language") or "en"
     
     # Header with translations
-    skills_title = "Master Essential Shop Skills" if lang == "en" else "Kuasai Keterampilan Toko Penting"
-    skills_subtitle = "Each game you play helps you improve specific skills" if lang == "en" else "Setiap permainan yang Anda mainkan membantu meningkatkan keterampilan tertentu"
+    skills_title = tr('skills_title')
+    skills_subtitle = tr('skills_subtitle')
     
     st.markdown(f"""
     <div class="onboarding-header">
@@ -614,24 +615,14 @@ def show_onboarding_skills_intro():
     col1, col2 = st.columns(2)
     
     # Translations for skill titles and descriptions
-    if lang == "en":
-        inventory_title = "Inventory Management" 
-        inventory_desc = "Keep track of stock and manage product ordering."
-        cash_title = "Cash Handling"
-        cash_desc = "Make change quickly and accurately when customers pay."
-        pricing_title = "Pricing Strategy"
-        pricing_desc = "Set prices correctly to ensure profit margins."
-        bookkeeping_title = "Bookkeeping"
-        bookkeeping_desc = "Record transactions and track business performance."
-    else:
-        inventory_title = "Manajemen Inventaris" 
-        inventory_desc = "Pantau stok dan kelola pemesanan produk."
-        cash_title = "Penanganan Kas"
-        cash_desc = "Berikan kembalian dengan cepat dan akurat saat pelanggan membayar."
-        pricing_title = "Strategi Penetapan Harga"
-        pricing_desc = "Tetapkan harga dengan tepat untuk memastikan margin keuntungan."
-        bookkeeping_title = "Pembukuan"
-        bookkeeping_desc = "Catat transaksi dan pantau kinerja bisnis."
+    inventory_title = tr('inventory_management')
+    inventory_desc = tr('inventory_description')
+    cash_title = tr('cash_handling')
+    cash_desc = tr('cash_description')
+    pricing_title = tr('pricing_strategy')
+    pricing_desc = tr('pricing_description')
+    bookkeeping_title = tr('bookkeeping')
+    bookkeeping_desc = tr('bookkeeping_description')
     
     with col1:
         show_skill_card(
@@ -665,8 +656,8 @@ def show_onboarding_skills_intro():
         )
     
     # Shop level progress with translations
-    grow_title = "Grow Your Shop" if lang == "en" else "Kembangkan Toko Anda"
-    grow_desc = "As your skills improve, your shop will grow from a small stall to a thriving business!" if lang == "en" else "Seiring keterampilan Anda meningkat, toko Anda akan berkembang dari kios kecil menjadi bisnis yang berkembang pesat!"
+    grow_title = tr('shop_growth_title')
+    grow_desc = tr('shop_growth_description')
     
     st.markdown(f"""
     <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 20px 0;">
@@ -676,16 +667,16 @@ def show_onboarding_skills_intro():
     """, unsafe_allow_html=True)
     
     # Add Streamlit native progress components with translations
-    shop_growth = "Shop Growth" if lang == "en" else "Pertumbuhan Toko"
-    level_text = "Level" if lang == "en" else "Tingkat"
+    shop_growth = tr('shop_growth')
+    level_text = tr('level_text')
     st.write(f"**{shop_growth}** - {level_text} 1/5")
     st.progress(0.2)  # 20% progress for Level 1
     
     # Navigation buttons
     st.container().markdown("<br>", unsafe_allow_html=True)
     
-    back_text = "Back" if lang == "en" else "Kembali"
-    next_text = "Next: Games" if lang == "en" else "Berikutnya: Permainan"
+    back_text = tr('back_button')
+    next_text = tr('next_button_skills')
     
     col1, col2, col3 = st.columns([1, 2, 2])
     
@@ -716,8 +707,8 @@ def show_onboarding_games_intro():
     lang = get_config("app.default_language") or "en"
     
     # Header with translations
-    header_title = "Learn Through Play" if lang == "en" else "Belajar Melalui Bermain"
-    header_subtitle = "Master business skills with these engaging mini-games" if lang == "en" else "Kuasai keterampilan bisnis dengan mini-game yang menarik ini"
+    header_title = tr('games_title')
+    header_subtitle = tr('games_subtitle')
     
     st.markdown(f"""
     <div class="onboarding-header">
@@ -727,62 +718,35 @@ def show_onboarding_games_intro():
     """, unsafe_allow_html=True)
     
     # Games showcase with translations
-    if lang == "en":
-        # English game descriptions
-        show_game_preview(
-            title="Inventory Counting",
-            description="Count your stock accurately and quickly",
-            icon="📦",
-            skill="Inventory Management",
-            difficulty="Easy to Medium"
-        )
-        
-        show_game_preview(
-            title="Change Making",
-            description="Make change for customers quickly and accurately",
-            icon="💰",
-            skill="Cash Handling",
-            difficulty="Easy to Hard"
-        )
-        
-        show_game_preview(
-            title="Margin Calculator",
-            description="Set prices to achieve target profit margins",
-            icon="🏷️",
-            skill="Pricing Strategy",
-            difficulty="Medium"
-        )
-    else:
-        # Bahasa Indonesia game descriptions
-        show_game_preview(
-            title="Penghitungan Inventaris",
-            description="Hitung stok Anda dengan akurat dan cepat",
-            icon="📦",
-            skill="Manajemen Inventaris",
-            difficulty="Mudah ke Menengah"
-        )
-        
-        show_game_preview(
-            title="Membuat Kembalian",
-            description="Berikan kembalian untuk pelanggan dengan cepat dan akurat",
-            icon="💰",
-            skill="Penanganan Kas",
-            difficulty="Mudah ke Sulit"
-        )
-        
-        show_game_preview(
-            title="Kalkulator Margin",
-            description="Tetapkan harga untuk mencapai target margin keuntungan",
-            icon="🏷️",
-            skill="Strategi Penetapan Harga",
-            difficulty="Menengah"
-        )
+    show_game_preview(
+        title=tr('game_1_title'),
+        description=tr('game_1_description'),
+        icon="📦",
+        skill=tr('inventory_management'),
+        difficulty=tr('game_1_difficulty')
+    )
+    
+    show_game_preview(
+        title=tr('game_2_title'),
+        description=tr('game_2_description'),
+        icon="💰",
+        skill=tr('cash_handling'),
+        difficulty=tr('game_2_difficulty')
+    )
+    
+    show_game_preview(
+        title=tr('game_3_title'),
+        description=tr('game_3_description'),
+        icon="🏷️",
+        skill=tr('pricing_strategy'),
+        difficulty=tr('game_3_difficulty')
+    )
     
     # Navigation buttons
     st.container().markdown("<br>", unsafe_allow_html=True)
     
-    back_text = "Back" if lang == "en" else "Kembali"
-    next_text = "Next: Get Started" if lang == "en" else "Berikutnya: Mulai"
+    back_text = tr('back_button')
+    next_text = tr('next_button_games')
     
     col1, col2, col3 = st.columns([1, 2, 2])
     
@@ -802,7 +766,7 @@ def show_game_preview(title, description, icon, skill, difficulty):
     lang = get_config("app.default_language") or "en"
     
     # Translate the "Difficulty" label
-    difficulty_label = "Difficulty" if lang == "en" else "Tingkat Kesulitan"
+    difficulty_label = tr('difficulty_label')
     
     st.markdown(f"""
     <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; display: flex; align-items: flex-start;">
@@ -823,8 +787,8 @@ def show_onboarding_complete():
     lang = get_config("app.default_language") or "en"
     
     # Header with celebration animation - translated
-    ready_title = "You're Ready to Begin!" if lang == "en" else "Anda Siap untuk Memulai!"
-    ready_subtitle = "Your journey to becoming a successful shop owner starts now" if lang == "en" else "Perjalanan Anda untuk menjadi pemilik toko yang sukses dimulai sekarang"
+    ready_title = tr('onboarding_complete_title')
+    ready_subtitle = tr('onboarding_complete_subtitle')
     
     st.markdown(f"""
     <div style="text-align: center; margin-bottom: 30px;">
@@ -847,12 +811,12 @@ def show_onboarding_complete():
     """, unsafe_allow_html=True)
     
     # Use Streamlit native progress component
-    st.write("**Shop Level**: 1/5")
+    st.write(tr('shop_level') + ": 1/5")
     st.progress(0.2)  # 20% progress for Level 1
     
     # First tasks suggestions with translations
-    tasks_title = "Your First Tasks" if lang == "en" else "Tugas Pertama Anda"
-    tasks_intro = "Here's what you can do to get started:" if lang == "en" else "Berikut adalah yang dapat Anda lakukan untuk memulai:"
+    tasks_title = tr('first_tasks_title')
+    tasks_intro = tr('first_tasks_intro')
     
     st.markdown(f"""
     <div style="background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 30px;">
@@ -862,20 +826,12 @@ def show_onboarding_complete():
     """, unsafe_allow_html=True)
     
     # Set up translations for tasks
-    if lang == "en":
-        task1_title = "Try the Inventory Counting game"
-        task1_desc = "Learn to keep track of your products"
-        task2_title = "Practice making change in the Cash Handling game"
-        task2_desc = "Process customer payments accurately"
-        task3_title = "Set profitable prices in the Margin Calculator"
-        task3_desc = "Ensure your business makes a profit"
-    else:
-        task1_title = "Coba permainan Penghitungan Inventaris"
-        task1_desc = "Pelajari cara melacak produk Anda"
-        task2_title = "Latih membuat kembalian dalam permainan Penanganan Kas"
-        task2_desc = "Proses pembayaran pelanggan dengan akurat"
-        task3_title = "Tetapkan harga menguntungkan di Kalkulator Margin"
-        task3_desc = "Pastikan bisnis Anda menghasilkan keuntungan"
+    task1_title = tr('task_1_title')
+    task1_desc = tr('task_1_description')
+    task2_title = tr('task_2_title')
+    task2_desc = tr('task_2_description')
+    task3_title = tr('task_3_title')
+    task3_desc = tr('task_3_description')
     
     # Task 1
     col1, col2 = st.columns([1, 20])
@@ -904,7 +860,7 @@ def show_onboarding_complete():
     # Complete button
     st.container().markdown("<br>", unsafe_allow_html=True)
     
-    start_text = "Start My Shop Journey" if lang == "en" else "Mulai Perjalanan Toko Saya"
+    start_text = tr('start_button')
     
     if st.button(start_text, key="complete_button", use_container_width=True):
         try:
@@ -946,21 +902,21 @@ def show_onboarding_complete():
                 user_id = db.create_user(player_name, {"shop_name": shop_name})
                 if user_id:
                     st.session_state.user_id = user_id
-                    st.success("User created successfully!")
+                    st.success(tr('user_created'))
             except Exception as e:
                 st.warning(f"Notice: Could not create user in database: {str(e)}")
-                st.write("Continuing with temporary data.")
+                st.write(tr('continuing_without_database'))
                 
             # Add a simple first achievement directly
             st.session_state.achievements.append({
                 "id": "first_steps",
-                "name": "First Steps",
-                "description": f"Started journey with {shop_name}",
+                "name": tr('first_steps_achievement'),
+                "description": f"{tr('started_journey')} {shop_name}",
                 "earned_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
             
             # Skip the additional button click and go directly to the main app flow
-            st.success("Your shop is ready! Redirecting to the main menu...")
+            st.success(tr('shop_ready'))
             
             # Make sure sidebar starts collapsed
             if 'sidebar_expanded' in st.session_state:
@@ -991,5 +947,5 @@ def show_onboarding_complete():
                 
         except Exception as e:
             # Display any errors
-            st.error(f"Error setting up your shop: {str(e)}")
-            st.info("Please try again or restart the application.")
+            st.error(f"{tr('error_setting_up_shop')}: {str(e)}")
+            st.info(tr('try_again'))

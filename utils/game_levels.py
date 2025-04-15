@@ -4,6 +4,7 @@ Provides standardized level management across different games.
 """
 import streamlit as st
 from utils.config import get_config
+from utils.i18n import tr
 
 def display_level_selection(game_id, level_descriptions, get_level_limits=None, on_level_select=None):
     """Display a standardized level selection UI.
@@ -31,7 +32,7 @@ def display_level_selection(game_id, level_descriptions, get_level_limits=None, 
     max_available_level = min(5, max(1, int(skill_level) + 1))
     
     # Display level selection UI
-    st.markdown("### Select Difficulty Level")
+    st.markdown(tr('level_selection_header'))
     
     # Create level selection cards
     cols = st.columns(5)
@@ -42,7 +43,7 @@ def display_level_selection(game_id, level_descriptions, get_level_limits=None, 
         is_unlocked = level_num <= max_available_level
         
         with col:
-            level_title = f"Level {level_num}"
+            level_title = tr('level_title', level_num=level_num)
             
             # Get short description for this level
             desc_key = "en" if lang == "en" else "id"
@@ -67,7 +68,7 @@ def display_level_selection(game_id, level_descriptions, get_level_limits=None, 
             if get_level_limits:
                 time_limit = get_level_limits(level_num)
                 if time_limit:
-                    time_text = "seconds" if lang == "en" else "detik"
+                    time_text = tr('time_text')
                     time_info = f"⏱️ {time_limit} {time_text}"
             
             # Create a card for each level with appropriate styling
@@ -77,12 +78,12 @@ def display_level_selection(game_id, level_descriptions, get_level_limits=None, 
                     <h4 style="margin: 0;">{level_title}</h4>
                     <p style="font-size: 0.8em; margin: 5px 0; height: 40px;">{level_desc}</p>
                     <div style="margin-top: 5px; font-size: 0.8em;">{time_info}</div>
-                    <div style="margin-top: 5px; color: {color};">Unlocked ✓</div>
+                    <div style="margin-top: 5px; color: {color};">{tr('unlocked_text')}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 
                 # Button to select this level
-                if st.button(f"Select Level {level_num}", key=f"select_{game_id}_level_{level_num}"):
+                if st.button(tr('select_level_button', level_num=level_num), key=f"select_{game_id}_level_{level_num}"):
                     level_selected = level_num
             else:
                 # Locked level
@@ -91,7 +92,7 @@ def display_level_selection(game_id, level_descriptions, get_level_limits=None, 
                     <h4 style="margin: 0;">{level_title}</h4>
                     <p style="font-size: 0.8em; margin: 5px 0; height: 40px;">{level_desc}</p>
                     <div style="margin-top: 5px; font-size: 0.8em;">{time_info}</div>
-                    <div style="margin-top: 5px; color: #888;">🔒 Locked</div>
+                    <div style="margin-top: 5px; color: #888;">{tr('locked_text')}</div>
                 </div>
                 """, unsafe_allow_html=True)
     
@@ -117,25 +118,22 @@ def display_level_header(level, descriptions, tips=None):
         1: "#4CAF50",  # Green for beginner
         2: "#2196F3",  # Blue for easy
         3: "#FF9800",  # Orange for medium
-        4: "#9C27B0",  # Purple for hard
-        5: "#F44336"   # Red for expert
+        4: "#E91E63",  # Pink for hard
+        5: "#9C27B0"   # Purple for expert
     }
     
-    level_color = level_colors.get(level, "#7E57C2")
-    level_text = f"Level {level}" if lang == "en" else f"Level {level}"
+    # Level text translation (with formatting)
+    level_text = tr('level_text', level=level)
+    # Defensive: descriptions should be a dict of lang -> level -> desc
+    if isinstance(descriptions, dict) and lang in descriptions:
+        level_descs = descriptions[lang]
+    else:
+        level_descs = descriptions.get('en', {})
+    level_desc = level_descs.get(level, "")
     
-    # Get level description
-    level_desc = ""
-    if level in descriptions:
-        if isinstance(descriptions[level], dict) and lang in descriptions[level]:
-            level_desc = descriptions[level][lang]
-        elif isinstance(descriptions[level], str):
-            level_desc = descriptions[level]
-    
-    # Display level header with colorful badge
     st.markdown(f"""
-    <div style="display: flex; align-items: center; margin-bottom: 15px;">
-        <div style="background-color: {level_color}; color: white; padding: 5px 10px; border-radius: 15px; font-weight: bold; margin-right: 10px;">
+    <div style="background-color: {level_colors.get(level, '#2196F3')}; color: white; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px;">
+        <div style="font-size: 1.2em; font-weight: bold;">
             {level_text}
         </div>
         <div style="font-size: 1.1em;">{level_desc}</div>
@@ -151,7 +149,7 @@ def display_level_header(level, descriptions, tips=None):
             tip_text = tips[level]
             
         if tip_text:
-            st.info(f"💡 **Tip:** {tip_text}")
+            st.info(tr('tip_text', tip=tip_text))
 
 def display_timer(start_time, time_limit):
     """Display a timer for timed levels.
@@ -185,7 +183,7 @@ def display_timer(start_time, time_limit):
         <div style="display: flex; justify-content: space-between; margin-top: 5px;">
             <span style="font-size: 0.8em; color: #757575;">0s</span>
             <span style="font-size: 0.9em; font-weight: bold; color: {timer_color};">
-                {int(remaining_time)} {'seconds' if lang == 'en' else 'detik'}
+                {int(remaining_time)} {tr('seconds_text', seconds=remaining_time)}
             </span>
             <span style="font-size: 0.8em; color: #757575;">{time_limit}s</span>
         </div>
@@ -210,13 +208,13 @@ def display_score_breakdown(base_score, level_bonus=0, time_bonus=0, accuracy_bo
     total_score = base_score + level_bonus + time_bonus + accuracy_bonus
     
     # Translations
-    score_breakdown = "Score Breakdown" if lang == "en" else "Rincian Skor"
-    base_score_text = "Base Score" if lang == "en" else "Skor Dasar"
-    level_bonus_text = "Level Bonus" if lang == "en" else "Bonus Level"
-    time_bonus_text = "Time Bonus" if lang == "en" else "Bonus Waktu"
-    accuracy_bonus_text = "Perfect Accuracy Bonus" if lang == "en" else "Bonus Akurasi Sempurna"
-    total_score_text = "Total Score" if lang == "en" else "Skor Total"
-    points = "points" if lang == "en" else "poin"
+    score_breakdown = tr('score_breakdown_text')
+    base_score_text = tr('base_score_text')
+    level_bonus_text = tr('level_bonus_text')
+    time_bonus_text = tr('time_bonus_text')
+    accuracy_bonus_text = tr('accuracy_bonus_text')
+    total_score_text = tr('total_score_text')
+    points = tr('points_text')
     
     # Create score breakdown table
     st.markdown(f"### {score_breakdown}")
@@ -224,8 +222,8 @@ def display_score_breakdown(base_score, level_bonus=0, time_bonus=0, accuracy_bo
     score_table = f"""
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
         <tr style="background-color: #f0f0f0;">
-            <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Component</th>
-            <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Points</th>
+            <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">{tr('component_text')}</th>
+            <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">{tr('points_text')}</th>
         </tr>
         <tr>
             <td style="padding: 8px; border: 1px solid #ddd;">{base_score_text}</td>
@@ -288,16 +286,15 @@ def display_game_end_buttons(level, accuracy, lang="en"):
     
     if accuracy >= 80 and level < 5:
         with col1:
-            next_level_text = "Next Level" if lang == "en" else "Level Berikutnya"
+            next_level_text = tr('next_level_button')
             next_level_clicked = st.button(next_level_text, key="next_level_button", type="primary")
     
     with col1 if (accuracy < 80 or level >= 5) else col2:
-        retry_text = "Try Again" if accuracy < 80 else "Practice This Level Again"
-        retry_text = retry_text if lang == "en" else "Coba Lagi" if accuracy < 80 else "Berlatih Level Ini Lagi"
+        retry_text = tr('retry_button', accuracy=accuracy)
         retry_clicked = st.button(retry_text, key="retry_button")
     
     with col2 if (accuracy < 80 or level >= 5) else col1:
-        main_menu_text = "Return to Main Menu" if lang == "en" else "Kembali ke Menu Utama"
+        main_menu_text = tr('main_menu_button')
         main_menu_clicked = st.button(main_menu_text, key="main_menu_button")
         
     return next_level_clicked, retry_clicked, main_menu_clicked

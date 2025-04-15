@@ -5,6 +5,8 @@ Main Streamlit application file.
 import streamlit as st
 import time
 import os
+import json
+from utils.i18n import tr
 
 # Import utilities
 from utils.config import get_config, set_config, initialize_product_database
@@ -13,7 +15,6 @@ from utils.skills import initialize_skills, update_shop_level
 
 # Import components
 from components.navigation import (
-    set_page_config, 
     inject_custom_css, 
     language_selector, 
     show_header, 
@@ -22,7 +23,6 @@ from components.navigation import (
 )
 from components.scoreboard import display_score_sidebar
 from components.shop_display import display_shop_upgrade_animation
-from components.sidebar import collapsible_sidebar, sidebar_quick_navigation, init_sidebar_state
 from components.user_login import show_user_login
 from games.breadcrumb import show_game_breadcrumb
 
@@ -30,11 +30,28 @@ from games.breadcrumb import show_game_breadcrumb
 import games
 from games import get_game_function, get_all_games
 
+# Helper: Load translations from file
+TRANSLATION_PATH = os.path.join(os.path.dirname(__file__), 'assets', 'i18n', 'app_translations.json')
+def get_translations():
+    with open(TRANSLATION_PATH, encoding='utf-8') as f:
+        return json.load(f)
+
+translations = get_translations()
+
+def get_lang_code():
+    lang = st.session_state.get("language", "English")
+    return "id" if lang == "Bahasa Indonesia" else "en"
+
 # Initialize app
 def init_app():
     """Initialize the application."""
     # Set page config - this must be called first
-    set_page_config()
+    st.set_page_config(
+        page_title="Toko Pintar - Financial Literacy Game",
+        page_icon="🏪",
+        layout="wide",
+        initial_sidebar_state="auto"  # Ensure sidebar is visible
+    )
     
     # Inject custom CSS
     assets_path = os.path.join(os.path.dirname(__file__), 'assets', 'styles')
@@ -57,6 +74,39 @@ def init_app():
         # Initialize skills
         initialize_skills()
 
+# --- Entry Page (where user enters name/store) ---
+def show_entry_page():
+    st.markdown(f"### {tr('welcome')}")
+    st.markdown(tr('please_enter'))
+    lang = st.selectbox(
+        tr("choose_language"),
+        ["English", "Bahasa Indonesia"],
+        index=["English", "Bahasa Indonesia"].index(st.session_state.get("language", "English")),
+        key="entry_language"
+    )
+    if st.session_state.get("language") != lang:
+        st.session_state["language"] = lang
+
+    player_name = st.text_input(tr("your_name"), value=st.session_state.get("player_name", ""))
+    store_name = st.text_input(tr("shop_name"), value=st.session_state.get("store_name", ""))
+    if st.button(tr("start_game")) and player_name:
+        st.session_state.player_name = player_name
+        st.session_state.store_name = store_name
+        st.success(tr("success_welcome", player_name=player_name))
+        st.experimental_rerun()
+
+# --- Sidebar language selector (available everywhere) ---
+def render_sidebar_language_selector():
+    lang = st.sidebar.selectbox(
+        tr("language"), ["English", "Bahasa Indonesia"],
+        index=["English", "Bahasa Indonesia"].index(st.session_state.get("language", "English")),
+        key="language"
+    )
+    # Update session state when language changes
+    if st.session_state.get("language") != lang:
+        st.session_state["language"] = lang
+        st.experimental_rerun()
+
 # Main app flow
 def main():
     """Main application entry point."""
@@ -68,6 +118,14 @@ def main():
         show_user_login()
         st.stop()
     # --- END USER LOGIN/REGISTRATION ---
+
+    # Entry page logic
+    if not st.session_state.get("player_name"):
+        show_entry_page()
+        return
+
+    # Only show sidebar language selector for logged-in, entered users
+    render_sidebar_language_selector()
 
     # Inject inventory game CSS after page config
     import os
@@ -101,11 +159,6 @@ def main():
     
     # --- DEBUG: Show current navigation state ---
     st.write("DEBUG: current_game =", st.session_state.get("current_game"))
-
-    # --- Always render sidebar for logged-in users ---
-    if st.session_state.get("player_name"):
-        init_sidebar_state()  # Ensure sidebar state is initialized and CSS injected
-        collapsible_sidebar(sidebar_quick_navigation)
 
     # --- Main navigation logic ---
     if st.session_state.get("current_game") is None:

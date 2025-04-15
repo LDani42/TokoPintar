@@ -4,6 +4,7 @@ Modern, user-friendly UI for basic arithmetic operations.
 """
 import streamlit as st
 from urllib.parse import parse_qs
+from utils.i18n import tr
 
 
 def get_game_info():
@@ -11,13 +12,13 @@ def get_game_info():
     return {
         "id": "simple_calculator",
         "name": {
-            "en": "Simple Calculator",
-            "id": "Kalkulator Sederhana"
+            "en": tr('simple_calculator_name_en'),
+            "id": tr('simple_calculator_name_id')
         },
-        "title": "Simple Calculator",
+        "title": tr('simple_calculator_title'),
         "description": {
-            "en": "A basic calculator for quick arithmetic.",
-            "id": "Kalkulator dasar untuk aritmatika cepat."
+            "en": tr('simple_calculator_description_en'),
+            "id": tr('simple_calculator_description_id')
         },
         "primary_skill": None,
         "levels": 1
@@ -83,11 +84,8 @@ def simple_calculator_game():
         })
         st.rerun()
 
-    st.markdown("""
-        <div style='text-align:center;margin-bottom:10px;'>
-            <span style='font-size:2.2rem;font-weight:bold;color:#1565C0;'>🧮 Simple Calculator</span>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"### {tr('simple_calculator_title')}")
+    st.info(tr('simple_calculator_instructions'))
     st.markdown("<hr style='margin:0 0 20px 0;'>", unsafe_allow_html=True)
 
     # --- Display ---
@@ -106,11 +104,11 @@ def simple_calculator_game():
 
     # --- Calculator Buttons Layout as HTML/CSS Grid ---
     button_grid = [
-        ["7", "8", "9", "÷"],
-        ["4", "5", "6", "×"],
-        ["1", "2", "3", "-"],
-        ["0", ".", "C", "+"],
-        ["+/-", "=", None, None],
+        ["7", "8", "9", tr('divide')],
+        ["4", "5", "6", tr('multiply')],
+        ["1", "2", "3", tr('subtract')],
+        ["0", ".", tr('clear'), tr('add')],
+        [tr('negate'), tr('equals'), None, None],
     ]
     html = """
     <form id='calc-form' autocomplete='off'>
@@ -247,34 +245,34 @@ def handle_calculator_input(label):
         elif "." not in display:
             display += "."
         formula += "." if not show_result else "."
-    elif label in ["+", "-", "×", "÷"]:
+    elif label in [tr('add'), tr('subtract'), tr('multiply'), tr('divide')]:
         if display:
             st.session_state["calc_last"] = display
             st.session_state["calc_operator"] = label
             st.session_state["calc_reset"] = True
-            if not formula.endswith(tuple(["+", "-", "×", "÷"])):
+            if not formula.endswith(tuple([tr('add'), tr('subtract'), tr('multiply'), tr('divide')])):
                 formula += f" {label} "
             else:
                 formula = formula[:-3] + f" {label} "
         st.session_state["calc_show_result"] = False
-    elif label == "=":
+    elif label == tr('equals'):
         if operator and last and display:
             try:
                 n1 = float(last)
                 n2 = float(display)
-                if operator == "+":
+                if operator == tr('add'):
                     result = n1 + n2
-                elif operator == "-":
+                elif operator == tr('subtract'):
                     result = n1 - n2
-                elif operator == "×":
+                elif operator == tr('multiply'):
                     result = n1 * n2
-                elif operator == "÷":
+                elif operator == tr('divide'):
                     if n2 == 0:
-                        display = "Error"
+                        display = tr('error')
                         st.session_state["calc_reset"] = True
                     else:
                         result = n1 / n2
-                if display != "Error":
+                if display != tr('error'):
                     display = str(result).rstrip("0").rstrip(".") if "." in str(result) else str(result)
                     st.session_state["calc_reset"] = True
                 st.session_state["calc_operator"] = ""
@@ -282,19 +280,19 @@ def handle_calculator_input(label):
                 st.session_state["calc_show_result"] = True
                 formula = ""
             except Exception:
-                display = "Error"
+                display = tr('error')
                 st.session_state["calc_reset"] = True
                 st.session_state["calc_show_result"] = True
                 formula = ""
-    elif label == "C":
+    elif label == tr('clear'):
         display = ""
         st.session_state["calc_last"] = ""
         st.session_state["calc_operator"] = ""
         st.session_state["calc_reset"] = False
         formula = ""
         st.session_state["calc_show_result"] = False
-    elif label == "+/-":
-        if display and display != "0" and display != "Error":
+    elif label == tr('negate'):
+        if display and display != "0" and display != tr('error'):
             if display.startswith("-"):
                 display = display[1:]
             else:

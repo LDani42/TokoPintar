@@ -14,6 +14,7 @@ from utils.game_levels import display_level_selection, display_level_header, dis
 from utils.game_ui import display_product_card, display_result_container, display_accuracy_gauge
 from utils.educational_content import display_learning_insight, display_formula_explanation
 from games.breadcrumb import show_game_breadcrumb
+from utils.i18n import tr
 
 def get_level_description(level):
     """Get description text for each level.
@@ -26,24 +27,24 @@ def get_level_description(level):
     """
     descriptions = {
         1: {
-            "en": "Simple change calculations with round numbers. Great for beginners!",
-            "id": "Perhitungan kembalian sederhana dengan angka bulat. Cocok untuk pemula!"
+            "en": tr('level_1_description'),
+            "id": tr('level_1_description_id')
         },
         2: {
-            "en": "More complex calculations with odd amounts. Pay attention to smaller denominations.",
-            "id": "Perhitungan lebih kompleks dengan jumlah ganjil. Perhatikan denominasi yang lebih kecil."
+            "en": tr('level_2_description'),
+            "id": tr('level_2_description_id')
         },
         3: {
-            "en": "Multiple items with varied prices. Calculate change with precision.",
-            "id": "Beberapa barang dengan harga bervariasi. Hitung kembalian dengan tepat."
+            "en": tr('level_3_description'),
+            "id": tr('level_3_description_id')
         },
         4: {
-            "en": "Time pressure and optimal denomination selection. Speed and efficiency matter!",
-            "id": "Tekanan waktu dan pemilihan denominasi optimal. Kecepatan dan efisiensi penting!"
+            "en": tr('level_4_description'),
+            "id": tr('level_4_description_id')
         },
         5: {
-            "en": "Find the optimal change combination with fewest bills/coins under tight time pressure.",
-            "id": "Temukan kombinasi kembalian optimal dengan uang kertas/koin paling sedikit dengan tekanan waktu ketat."
+            "en": tr('level_5_description'),
+            "id": tr('level_5_description_id')
         }
     }
     
@@ -60,24 +61,24 @@ def get_level_tips(level):
     """
     tips = {
         1: {
-            "en": "Start with the formula: Change = Payment - Total Price. With round numbers, this is easy!",
-            "id": "Mulai dengan rumus: Kembalian = Pembayaran - Total Harga. Dengan angka bulat, ini mudah!"
+            "en": tr('level_1_tip'),
+            "id": tr('level_1_tip_id')
         },
         2: {
-            "en": "Break down the calculation: first calculate the main difference, then handle smaller denominations.",
-            "id": "Uraikan perhitungan: pertama hitung perbedaan utama, lalu tangani denominasi yang lebih kecil."
+            "en": tr('level_2_tip'),
+            "id": tr('level_2_tip_id')
         },
         3: {
-            "en": "Add all prices first, then subtract from the payment. Check your math carefully!",
-            "id": "Tambahkan semua harga terlebih dahulu, lalu kurangi dari pembayaran. Periksa perhitungan Anda dengan hati-hati!"
+            "en": tr('level_3_tip'),
+            "id": tr('level_3_tip_id')
         },
         4: {
-            "en": "Try to use the fewest bills and coins possible. Larger denominations first, then smaller ones.",
-            "id": "Cobalah untuk menggunakan uang kertas dan koin sesedikit mungkin. Denominasi lebih besar dahulu, lalu yang lebih kecil."
+            "en": tr('level_4_tip'),
+            "id": tr('level_4_tip_id')
         },
         5: {
-            "en": "Speed is critical! Practice mental math shortcuts and quick denomination selection.",
-            "id": "Kecepatan sangat penting! Latih jalan pintas matematika mental dan pemilihan denominasi yang cepat."
+            "en": tr('level_5_tip'),
+            "id": tr('level_5_tip_id')
         }
     }
     
@@ -208,7 +209,7 @@ def change_making_game():
             </span>
         </div>
     """, unsafe_allow_html=True)
-    st.markdown(f"<div style='text-align:center;color:#444;margin-bottom:20px;'>{'Calculate change quickly and accurately.' if lang=='en' else 'Hitung kembalian dengan cepat dan akurat.'}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align:center;color:#444;margin-bottom:20px;'>{tr('change_making_instructions')}</div>", unsafe_allow_html=True)
     
     display_educational_tip("cash")
     col1, col2 = st.columns([3, 1])
@@ -227,7 +228,7 @@ def change_making_game():
     if game.get("time_limit"):
         remaining_time = display_timer(game["start_time"], game["time_limit"])
         if remaining_time <= 0 and not game.get("submitted"):
-            st.warning(("Time's up!" if lang=="en" else "Waktu habis!") + " Your answer has been submitted.")
+            st.warning((tr('time_up')) + " Your answer has been submitted.")
             game["submitted"] = True
             st.rerun()
     
@@ -241,8 +242,8 @@ def change_making_game():
     # Product purchase section
     st.markdown("""
         <div style='background:#f5f5f5;padding:18px 18px 10px 18px;border-radius:10px;box-shadow:0 2px 8px #eee;margin-bottom:18px;'>
-            <span style='font-size:1.2rem;font-weight:bold;'>🛒 {}</span>
-    """.format("Customer Purchase" if lang=="en" else "Pembelian Pelanggan"), unsafe_allow_html=True)
+            <span style='font-size:1.2rem;font-weight:bold;'>🛒 {tr('customer_purchase')}</span>
+    """, unsafe_allow_html=True)
     for item in items:
         name = item["name_id"] if lang == "id" and "name_id" in item else item["name"]
         price = item["sell_price"]
@@ -254,8 +255,8 @@ def change_making_game():
     # Payment section
     st.markdown("""
         <div style='background:#e8f5e9;padding:15px 15px 8px 15px;border-radius:10px;box-shadow:0 2px 8px #eee;margin-bottom:18px;'>
-            <span style='font-size:1.1rem;font-weight:bold;'>💰 {}</span>
-    """.format("Customer Pays With" if lang=="en" else "Pelanggan Membayar Dengan"), unsafe_allow_html=True)
+            <span style='font-size:1.1rem;font-weight:bold;'>💰 {tr('customer_pays_with')}</span>
+    """, unsafe_allow_html=True)
     denominations = [100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100]
     payment_left = payment
     for denom in denominations:
@@ -263,19 +264,18 @@ def change_making_game():
         if count > 0:
             st.markdown(f"<div style='display:inline-block;background:#5DADE2;color:white;width:68px;height:38px;margin:3px 3px 8px 0;text-align:center;border-radius:5px;line-height:38px;font-weight:bold;'>Rp {denom:,}</div>", unsafe_allow_html=True)
             payment_left %= denom
-    st.markdown(f"<div style='margin-top:6px;font-weight:bold;'>Total Payment: <span class='cash-amount'>Rp {payment:,}</span></div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='margin-top:6px;font-weight:bold;'>{tr('total_payment')}: <span class='cash-amount'>Rp {payment:,}</span></div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
     
     # --- CHANGE INPUT AREA ---
-    change_label = "How much change should you give back to the customer?" if lang=="en" else "Berapa kembalian yang harus Anda berikan kepada pelanggan?"
-    correct_change = game["correct_change"]
+    change_label = tr('change_label')
     
     if level >= 4 and not game.get("submitted"):
         # Denomination selection UI
         if "selected_denominations" not in game:
             game["selected_denominations"] = {denom: 0 for denom in denominations}
-        st.markdown("<div style='margin-bottom:10px;'><b>Select bills/coins to give as change:</b></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='margin-bottom:10px;'><b>{tr('select_bills_coins')}</b></div>", unsafe_allow_html=True)
         denom_cols = st.columns(len(denominations))
         for i, denom in enumerate(denominations):
             with denom_cols[i]:
@@ -291,14 +291,14 @@ def change_making_game():
                         game["selected_denominations"][denom] += 1
         selected_total = sum(denom * count for denom, count in game["selected_denominations"].items())
         game["user_change"] = selected_total
-        st.markdown(f"<div style='margin-top:10px;font-weight:bold;'>Your selected change: <span class='cash-amount'>Rp {selected_total:,}</span></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='margin-top:10px;font-weight:bold;'>{tr('your_selected_change')}: <span class='cash-amount'>Rp {selected_total:,}</span></div>", unsafe_allow_html=True)
         if any(count > 0 for count in game["selected_denominations"].values()):
             selected_notes = [f"{count} x Rp {denom:,}" for denom, count in game["selected_denominations"].items() if count > 0]
-            st.markdown(f"<div style='margin-bottom:8px;'>You're giving: {', '.join(selected_notes)}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='margin-bottom:8px;'>{tr('you_are_giving')}: {', '.join(selected_notes)}</div>", unsafe_allow_html=True)
     elif level < 4 and not game.get("submitted"):
         st.markdown(f"<h3 style='margin-bottom:12px;'>{change_label}</h3>", unsafe_allow_html=True)
         # Only allow answer selection from provided options, not free number input
-        options = [correct_change, correct_change + 1000, max(100, correct_change - 1000)]
+        options = [game["correct_change"], game["correct_change"] + 1000, max(100, game["correct_change"] - 1000)]
         options = sorted(set(options))
         btn_cols = st.columns(len(options))
         for i, amount in enumerate(options):
@@ -312,16 +312,16 @@ def change_making_game():
             st.markdown(f"<div style='background:white;padding:12px 0 8px 0;border-radius:7px;border:1px solid #b3c7e6;margin:10px 0 0 0;text-align:right;'><span style='font-size:1.4rem;font-family:monospace;color:#2E7D32;'>Rp {game['user_change']:,}</span></div>", unsafe_allow_html=True)
     
     # --- SUBMIT BUTTON ---
-    check_text = "Check My Answer" if lang == "en" else "Periksa Jawaban Saya"
+    check_text = tr('check_my_answer')
     if st.button(check_text) or game.get("submitted"):
         game["submitted"] = True
         user_change = game["user_change"]
         base_score = 0
-        if user_change == correct_change:
+        if user_change == game["correct_change"]:
             base_score = 10 * level
-            display_result_container(True, correct_change, user_change, "currency", lang)
+            display_result_container(True, game["correct_change"], user_change, "currency", lang)
         else:
-            display_result_container(False, correct_change, user_change, "currency", lang)
+            display_result_container(False, game["correct_change"], user_change, "currency", lang)
         # Score, feedback, and progress update
         results = update_skills("change_making", base_score)
         st.write("DEBUG: Skill levels after update", st.session_state.skill_levels)
@@ -329,13 +329,13 @@ def change_making_game():
         display_educational_tip("cash")
         col1, col2 = st.columns(2)
         with col1:
-            path_text = "Go to Learning Path" if lang == "en" else "Buka Jalur Pembelajaran"
+            path_text = tr('go_to_learning_path')
             if st.button(path_text, key="go_to_cash_learning_path"):
                 st.session_state.current_game = None
                 st.session_state.selected_learning_path = "cash"
                 st.rerun()
         with col2:
-            continue_text = "Continue to Main Menu" if lang == "en" else "Lanjutkan ke Menu Utama"
+            continue_text = tr('continue_to_main_menu')
             if st.button(continue_text, key="continue_cash_main_menu"):
                 if "change_making" in st.session_state:
                     del st.session_state.change_making
@@ -399,12 +399,12 @@ def get_game_info():
     return {
         "id": "change_making",
         "name": {
-            "en": "Change Making",
-            "id": "Memberi Kembalian"
+            "en": tr('change_making_title'),
+            "id": tr('change_making_title_id')
         },
         "description": {
-            "en": "Calculate change quickly and accurately",
-            "id": "Hitung kembalian dengan cepat dan akurat"
+            "en": tr('change_making_description'),
+            "id": tr('change_making_description_id')
         },
         "primary_skill": "cash_handling",
         "levels": 5,

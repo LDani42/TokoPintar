@@ -11,6 +11,7 @@ from utils.db import db
 from utils.tooltips import show_mechanics_tooltip_button, add_tooltips_to_page
 import os
 from games.breadcrumb import show_game_breadcrumb
+from utils.i18n import tr
 
 def generate_widget_key(*args):
     """Generate a unique widget key by joining all arguments with underscores."""
@@ -195,24 +196,24 @@ def get_level_description(level):
     """
     descriptions = {
         1: {
-            "en": "Basic counting of distinct items. Count each product type accurately.",
-            "id": "Penghitungan dasar untuk jenis barang yang berbeda. Hitung setiap jenis produk dengan tepat."
+            "en": tr('level_1_description'),
+            "id": tr('level_1_description_id')
         },
         2: {
-            "en": "Similar items categorization. Pay attention to similar-looking products.",
-            "id": "Kategorisasi barang yang mirip. Perhatikan produk yang tampak serupa."
+            "en": tr('level_2_description'),
+            "id": tr('level_2_description_id')
         },
         3: {
-            "en": "Time pressure inventory. Count accurately while racing against the clock.",
-            "id": "Inventaris dengan tekanan waktu. Hitung dengan tepat sambil berlomba dengan waktu."
+            "en": tr('level_3_description'),
+            "id": tr('level_3_description_id')
         },
         4: {
-            "en": "Identify discrepancies. Some items may be damaged or misplaced.",
-            "id": "Identifikasi perbedaan. Beberapa barang mungkin rusak atau salah tempat."
+            "en": tr('level_4_description'),
+            "id": tr('level_4_description_id')
         },
         5: {
-            "en": "Full inventory audit. Handle multiple categories with time pressure.",
-            "id": "Audit inventaris lengkap. Tangani berbagai kategori dengan tekanan waktu."
+            "en": tr('level_5_description'),
+            "id": tr('level_5_description_id')
         }
     }
     
@@ -229,24 +230,24 @@ def get_level_tips(level):
     """
     tips = {
         1: {
-            "en": "Take your time and count one item at a time. This builds basic counting skills.",
-            "id": "Luangkan waktu dan hitung satu item pada satu waktu. Ini membangun keterampilan menghitung dasar."
+            "en": tr('level_1_tip'),
+            "id": tr('level_1_tip_id')
         },
         2: {
-            "en": "Group similar items and count by category. Note subtle differences between products.",
-            "id": "Kelompokkan item serupa dan hitung berdasarkan kategori. Perhatikan perbedaan halus antar produk."
+            "en": tr('level_2_tip'),
+            "id": tr('level_2_tip_id')
         },
         3: {
-            "en": "Use grouping strategies to count quickly. Try counting in groups of 5 or 10.",
-            "id": "Gunakan strategi pengelompokan untuk menghitung dengan cepat. Coba hitung dalam kelompok 5 atau 10."
+            "en": tr('level_3_tip'),
+            "id": tr('level_3_tip_id')
         },
         4: {
-            "en": "Look for damaged or misplaced items. In real inventory, these create discrepancies.",
-            "id": "Cari barang yang rusak atau salah tempat. Dalam inventaris nyata, ini menciptakan perbedaan."
+            "en": tr('level_4_tip'),
+            "id": tr('level_4_tip_id')
         },
         5: {
-            "en": "Combine speed and accuracy. Use systematic counting patterns to handle complex inventory.",
-            "id": "Gabungkan kecepatan dan akurasi. Gunakan pola penghitungan sistematis untuk menangani inventaris kompleks."
+            "en": tr('level_5_tip'),
+            "id": tr('level_5_tip_id')
         }
     }
     
@@ -274,7 +275,7 @@ def inventory_game():
     # Force initialization at the start of the game function
     # This must happen before any other code that uses the session state
     if "inventory_game" not in st.session_state:
-        st.info("Initializing inventory game...")
+        st.info(tr('initializing_inventory_game'))
         initialize_game_state(1)
         st.rerun()
         return
@@ -320,11 +321,8 @@ def inventory_game():
     """, unsafe_allow_html=True)
     
     # Game title
-    title = "Inventory Counting Game" if lang == "en" else "Permainan Menghitung Inventaris"
-    description = "Count the items shown for each product and enter the correct numbers." if lang == "en" else "Hitung item yang ditampilkan untuk setiap produk dan masukkan angka yang benar."
-    
-    st.markdown(f'<p class="game-title">{title}</p>', unsafe_allow_html=True)
-    st.write(description)
+    st.markdown(f'<p class="game-title">{tr("inventory_game_title")}</p>', unsafe_allow_html=True)
+    st.write(tr('inventory_instructions'))
     
     # Display educational tip
     display_educational_tip("inventory")
@@ -344,7 +342,7 @@ def inventory_game():
         max_available_level = min(5, max(1, int(skill_level) + 1))
         
         # Display level selection UI
-        st.markdown("### Select Difficulty Level")
+        st.markdown("### " + tr('select_difficulty_level'))
         
         # Create level selection cards
         cols = st.columns(5)
@@ -366,12 +364,12 @@ def inventory_game():
                     <div style="padding: 10px; border-radius: 8px; border: 2px solid #4CAF50; text-align: center; margin-bottom: 10px; cursor: pointer; height: 120px;">
                         <h4 style="margin: 0;">{level_title}</h4>
                         <p style="font-size: 0.8em; margin: 5px 0; height: 40px;">{level_desc}</p>
-                        <div style="margin-top: 5px; color: #4CAF50;">Unlocked ✓</div>
+                        <div style="margin-top: 5px; color: #4CAF50;">{tr('unlocked')}</div>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     # Button to select this level
-                    if st.button(f"Select Level {level_num}", key=generate_widget_key("button", f"select_level_{level_num}")):
+                    if st.button(f"{tr('select_level')} {level_num}", key=generate_widget_key("button", f"select_level_{level_num}")):
                         level_selected = level_num
                 else:
                     # Locked level
@@ -379,7 +377,7 @@ def inventory_game():
                     <div style="padding: 10px; border-radius: 8px; border: 2px solid #ccc; text-align: center; margin-bottom: 10px; opacity: 0.7; height: 120px;">
                         <h4 style="margin: 0;">{level_title}</h4>
                         <p style="font-size: 0.8em; margin: 5px 0; height: 40px;">{level_desc}</p>
-                        <div style="margin-top: 5px; color: #888;">🔒 Locked</div>
+                        <div style="margin-top: 5px; color: #888;">{tr('locked')}</div>
                     </div>
                     """, unsafe_allow_html=True)
         
@@ -399,11 +397,11 @@ def inventory_game():
         
         # Display timer
         st.progress(remaining_time / game["time_limit"])
-        st.write(f"Time remaining: {int(remaining_time)} seconds")
+        st.write(f"{tr('time_remaining')}: {int(remaining_time)} {tr('seconds')}")
         
         # Auto-submit if time is up
         if remaining_time <= 0 and not game.get("submitted"):
-            st.warning("Time's up! Your count has been submitted.")
+            st.warning(tr('time_up'))
             game["submitted"] = True
             st.rerun()
     
@@ -435,7 +433,7 @@ def inventory_game():
     """, unsafe_allow_html=True)
     
     # Display tips in an info box
-    st.info(f"💡 **Tip:** {level_tips}")
+    st.info(f"💡 **{tr('tip')}**: {level_tips}")
     
     # Display each product with visual counting area and input field
     for i, item in enumerate(items):
@@ -450,7 +448,7 @@ def inventory_game():
         st.markdown(visual_inventory, unsafe_allow_html=True)
         
         # Input field for user's count
-        count_label = "Your count" if lang == "en" else "Hitungan Anda"
+        count_label = tr('your_count')
         user_count = st.number_input(
             count_label, 
             min_value=0,
@@ -464,7 +462,7 @@ def inventory_game():
         st.markdown("---")
     
     # Submit button
-    submit_text = "Submit Inventory Count" if lang == "en" else "Kirim Hitungan Inventaris"
+    submit_text = tr('submit_inventory_count')
     if st.button(submit_text, key=generate_widget_key("button", "submit_inventory")) or game.get("submitted"):
         game["submitted"] = True
         
@@ -478,12 +476,12 @@ def inventory_game():
             
             if is_correct:
                 score += 10
-                correct_text = "Correct" if lang == "en" else "Benar"
-                you_counted = "You counted" if lang == "en" else "Anda menghitung"
+                correct_text = tr('correct')
+                you_counted = tr('you_counted')
                 results.append(f"✅ **{display_name}**: {correct_text}! {you_counted} {item['user_count']}")
             else:
-                you_counted = "You counted" if lang == "en" else "Anda menghitung"
-                actual_count = "actual count was" if lang == "en" else "jumlah sebenarnya adalah"
+                you_counted = tr('you_counted')
+                actual_count = tr('actual_count_was')
                 results.append(f"❌ **{display_name}**: {you_counted} {item['user_count']}, {actual_count} {item['actual_count']}")
         
         # Calculate bonuses based on level
@@ -518,7 +516,7 @@ def inventory_game():
             total_bonus += accuracy_bonus
         
         # Display results
-        results_text = "Results" if lang == "en" else "Hasil"
+        results_text = tr('results')
         st.markdown(f"### {results_text}:")
         
         # Group results by category (correct/incorrect) for better readability
@@ -533,39 +531,39 @@ def inventory_game():
         
         # Show results in expandable sections
         if correct_results:
-            correct_text = "Correct Items" if lang == "en" else "Item Benar"
+            correct_text = tr('correct_items')
             with st.expander(f"{correct_text} ({len(correct_results)}/{len(items)})", expanded=True):
                 for result in correct_results:
                     st.markdown(result)
         
         if incorrect_results:
-            incorrect_text = "Incorrect Items" if lang == "en" else "Item Salah"
+            incorrect_text = tr('incorrect_items')
             with st.expander(f"{incorrect_text} ({len(incorrect_results)}/{len(items)})", expanded=True):
                 for result in incorrect_results:
                     st.markdown(result)
         
         # Show detailed score breakdown
-        st.markdown("### Score Breakdown")
+        st.markdown("### " + tr('score_breakdown'))
         
         # Base score
-        base_score_text = "Base Score" if lang == "en" else "Skor Dasar"
-        st.markdown(f"**{base_score_text}:** {10 * correct_count} points ({correct_count} correct items × 10)")
+        base_score_text = tr('base_score')
+        st.markdown(f"**{base_score_text}:** {10 * correct_count} points ({correct_count} {tr('correct_items')} × 10)")
         
         # Bonuses
         if time_bonus > 0:
-            time_bonus_text = "Time Bonus" if lang == "en" else "Bonus Waktu"
+            time_bonus_text = tr('time_bonus')
             st.markdown(f"**{time_bonus_text}:** +{time_bonus} points")
         
         if level_bonus > 0:
-            level_bonus_text = "Level Bonus" if lang == "en" else "Bonus Level"
+            level_bonus_text = tr('level_bonus')
             st.markdown(f"**{level_bonus_text}:** +{level_bonus} points")
         
         if accuracy_bonus > 0:
-            accuracy_bonus_text = "Perfect Accuracy Bonus" if lang == "en" else "Bonus Akurasi Sempurna"
+            accuracy_bonus_text = tr('perfect_accuracy_bonus')
             st.markdown(f"**{accuracy_bonus_text}:** +{accuracy_bonus} points")
         
         # Total score with animation for emphasis
-        score_text = "Total Score" if lang == "en" else "Skor Total"
+        score_text = tr('total_score')
         
         st.markdown(f"""
         <div style="margin: 15px 0; padding: 10px; background-color: #E8F5E9; border-radius: 8px; border-left: 4px solid #4CAF50;">
@@ -580,23 +578,23 @@ def inventory_game():
                 # Special celebration for perfect score at high levels
                 st.markdown(f"""
                 <div style="padding: 20px; text-align: center; background-color: #FFF9C4; border-radius: 10px; margin: 20px 0;">
-                    <h2 style="color: #FF9800; margin-bottom: 10px;">🏆 {level_text} Master! 🏆</h2>
-                    <p style="font-size: 1.2em;">Perfect inventory management at this advanced level is remarkable!</p>
+                    <h2 style="color: #FF9800; margin-bottom: 10px;">🏆 {level_text} {tr('master')}! 🏆</h2>
+                    <p style="font-size: 1.2em;">{tr('perfect_score_at_high_level')}</p>
                 </div>
                 """, unsafe_allow_html=True)
             else:
-                perfect_score = "Perfect Score" if lang == "en" else "Skor Sempurna"
-                skills_excellent = "Your inventory management skills are excellent" if lang == "en" else "Keterampilan manajemen inventaris Anda sangat baik"
-                st.success(f"{perfect_score}! {skills_excellent}!")
+                perfect_score = tr('perfect_score')
+                skills_excellent = tr('your_inventory_management_skills_are_excellent')
+                st.success(f"{perfect_score}! {skills_excellent}")
         elif accuracy >= 80:
-            good_job = "Great Job" if lang == "en" else "Kerja Bagus"
-            st.success(f"{good_job}! {int(accuracy)}% accuracy is very good!")
+            good_job = tr('good_job')
+            st.success(f"{good_job}! {int(accuracy)}% {tr('accuracy_is_very_good')}")
         
         # Update player progress
         results = update_skills("inventory_game", score)
         
         # Show detailed feedback based on performance
-        st.markdown("### Learning Insights")
+        st.markdown("### " + tr('learning_insights'))
         
         # Calculate accuracy percentage
         correct_count = sum(1 for item in items if item["user_count"] == item["actual_count"])
@@ -605,7 +603,7 @@ def inventory_game():
         # Display accuracy gauge
         st.markdown(f"""
         <div style="margin: 20px 0;">
-            <p style="margin-bottom: 5px;">Accuracy</p>
+            <p style="margin-bottom: 5px;">{tr('accuracy')}</p>
             <div style="height: 10px; background-color: #EEEEEE; border-radius: 5px;">
                 <div style="height: 100%; width: {accuracy}%; background-color: {'#4CAF50' if accuracy >= 70 else '#FFC107' if accuracy >= 40 else '#F44336'}; border-radius: 5px;"></div>
             </div>
@@ -619,45 +617,45 @@ def inventory_game():
         
         # Personalized feedback based on performance
         if accuracy == 100:
-            st.success("Excellent work! You counted every item correctly. This level of accuracy is essential for proper inventory management.")
+            st.success(tr('excellent_work'))
             
             # Suggest moving to a harder level
             if level < 5:
-                next_level_text = "Try the next level" if lang == "en" else "Coba level berikutnya"
-                st.info(f"{next_level_text} for a greater challenge!")
+                next_level_text = tr('try_the_next_level')
+                st.info(f"{next_level_text} {tr('for_a_greater_challenge')}")
         elif accuracy >= 80:
-            st.success("Great job! You're very accurate with your counting. Small errors can still affect inventory management over time.")
+            st.success(tr('great_job'))
             
             # Provide a specific tip for improvement
             if level >= 3:
                 st.markdown("""
                 <div style="background-color: #FFF3E0; border-left: 4px solid #FF9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                    <strong>Improvement Tip:</strong> Try counting in groups (like 2s or 5s) for even faster accuracy with large quantities.
+                    <strong>{tr('improvement_tip')}:</strong> {tr('try_counting_in_groups')}
                 </div>
                 """, unsafe_allow_html=True)
         elif accuracy >= 50:
-            st.warning("Not bad, but there's room for improvement. Accurate inventory counts prevent stockouts and overstocking.")
+            st.warning(tr('not_bad_but_room_for_improvement'))
             
             # Specific advice based on level
             if level <= 2:
                 st.markdown("""
                 <div style="background-color: #FFF3E0; border-left: 4px solid #FF9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                    <strong>Improvement Tip:</strong> Try counting each item once, then verify with a second count.
+                    <strong>{tr('improvement_tip')}:</strong> {tr('try_counting_each_item_once')}
                 </div>
                 """, unsafe_allow_html=True)
             else:
                 st.markdown("""
                 <div style="background-color: #FFF3E0; border-left: 4px solid #FF9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                    <strong>Improvement Tip:</strong> Group items visually when counting larger quantities to avoid losing your place.
+                    <strong>{tr('improvement_tip')}:</strong> {tr('group_items_visually')}
                 </div>
                 """, unsafe_allow_html=True)
         else:
-            st.error("Your accuracy needs improvement. Incorrect inventory counts can lead to business losses.")
+            st.error(tr('your_accuracy_needs_improvement'))
             
             # Basic advice for struggling players
             st.markdown("""
             <div style="background-color: #FFF3E0; border-left: 4px solid #FF9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                <strong>Improvement Tip:</strong> Start by organizing items into rows of 5 or 10 to make counting easier.
+                <strong>{tr('improvement_tip')}:</strong> {tr('start_by_organizing_items')}
             </div>
             """, unsafe_allow_html=True)
         
@@ -665,26 +663,26 @@ def inventory_game():
         from components.learning.real_world_tips import get_real_world_applications
         applications = get_real_world_applications("inventory_management", 1)
         if applications and lang in applications:
-            with st.expander("See Real-World Examples"):
+            with st.expander(tr('see_real_world_examples')):
                 st.markdown(applications[lang])
         
         # Learning path suggestion
         st.markdown("""
         <div style="background-color: #E8F5E9; border: 1px solid #66BB6A; border-radius: 8px; padding: 15px; margin-top: 20px;">
-            <h4 style="color: #2E7D32; margin-top: 0;">Continue Your Learning</h4>
-            <p>Explore the Inventory Management learning path to master more advanced techniques.</p>
+            <h4 style="color: #2E7D32; margin-top: 0;">{tr('continue_your_learning')}</h4>
+            <p>{tr('explore_inventory_management_learning_path')}</p>
         </div>
         """, unsafe_allow_html=True)
         
         # Learning path button
-        path_text = "Go to Learning Path" if lang == "en" else "Buka Jalur Pembelajaran"
+        path_text = tr('go_to_learning_path')
         if st.button(path_text, key=generate_widget_key("button", "go_to_learning_path")):
             st.session_state.current_game = None
             st.session_state.selected_learning_path = "inventory"
             st.rerun()
         
         # Continue button
-        continue_text = "Continue to Main Menu" if lang == "en" else "Lanjutkan ke Menu Utama"
+        continue_text = tr('continue_to_main_menu')
         if st.button(continue_text, key=generate_widget_key("button", "continue_main_menu")):
             # Clean up game state
             if "inventory_game" in st.session_state:
@@ -706,36 +704,36 @@ def get_game_info():
     return {
         "id": "inventory_game",
         "name": {
-            "en": "Inventory Counting",
-            "id": "Menghitung Inventaris"
+            "en": tr('inventory_game_name'),
+            "id": tr('inventory_game_name_id')
         },
-        "title": "Inventory Counting Game",
+        "title": tr('inventory_game_title'),
         "description": {
-            "en": "Keep track of your stock accurately",
-            "id": "Catat persediaan Anda dengan akurat"
+            "en": tr('inventory_game_description'),
+            "id": tr('inventory_game_description_id')
         },
         "primary_skill": "inventory_management",
         "levels": 5,
         "level_descriptions": {
             1: {
-                "en": "Basic counting of distinct items",
-                "id": "Penghitungan dasar untuk jenis barang yang berbeda"
+                "en": tr('level_1_description'),
+                "id": tr('level_1_description_id')
             },
             2: {
-                "en": "Similar items categorization",
-                "id": "Kategorisasi barang yang mirip"
+                "en": tr('level_2_description'),
+                "id": tr('level_2_description_id')
             },
             3: {
-                "en": "Time pressure inventory counting",
-                "id": "Penghitungan inventaris dengan tekanan waktu"
+                "en": tr('level_3_description'),
+                "id": tr('level_3_description_id')
             },
             4: {
-                "en": "Identifying damaged and misplaced items",
-                "id": "Mengidentifikasi barang rusak dan salah tempat"
+                "en": tr('level_4_description'),
+                "id": tr('level_4_description_id')
             },
             5: {
-                "en": "Full inventory audit with multiple categories",
-                "id": "Audit inventaris lengkap dengan beberapa kategori"
+                "en": tr('level_5_description'),
+                "id": tr('level_5_description_id')
             }
         },
         "time_limit": {
@@ -754,24 +752,24 @@ def get_game_info():
         },
         "educational_objectives": {
             1: {
-                "en": "Basic counting skills and stock awareness",
-                "id": "Keterampilan menghitung dasar dan kesadaran stok"
+                "en": tr('level_1_educational_objective'),
+                "id": tr('level_1_educational_objective_id')
             },
             2: {
-                "en": "Product categorization and differentiation",
-                "id": "Kategorisasi dan pembedaan produk"
+                "en": tr('level_2_educational_objective'),
+                "id": tr('level_2_educational_objective_id')
             },
             3: {
-                "en": "Speed and accuracy balance in inventory management",
-                "id": "Keseimbangan kecepatan dan akurasi dalam manajemen inventaris"
+                "en": tr('level_3_educational_objective'),
+                "id": tr('level_3_educational_objective_id')
             },
             4: {
-                "en": "Identifying inventory discrepancies and their causes",
-                "id": "Mengidentifikasi perbedaan inventaris dan penyebabnya"
+                "en": tr('level_4_educational_objective'),
+                "id": tr('level_4_educational_objective_id')
             },
             5: {
-                "en": "Comprehensive inventory management under pressure",
-                "id": "Manajemen inventaris komprehensif di bawah tekanan"
+                "en": tr('level_5_educational_objective'),
+                "id": tr('level_5_educational_objective_id')
             }
         }
     }

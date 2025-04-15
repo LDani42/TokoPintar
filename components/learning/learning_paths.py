@@ -7,6 +7,7 @@ from datetime import datetime
 from utils.config import get_config
 from utils.skills import get_skill_name, get_skill_icon, get_skill_description
 from components.learning.real_world_tips import get_tips_for_skill, get_real_world_applications, display_pro_tip
+from utils.i18n import tr
 
 # Define learning paths with their milestones and games
 LEARNING_PATHS = {
@@ -278,7 +279,7 @@ def show_learning_module(path_id, milestone_level=None):
         milestone_level (int, optional): Level of milestone to show, defaults to current
     """
     if path_id not in LEARNING_PATHS:
-        st.error("Learning path not found!")
+        st.error(tr("learning_path_not_found"))
         return
     
     # Get path info and progress
@@ -308,7 +309,7 @@ def show_learning_module(path_id, milestone_level=None):
                  background-color: var(--color-primary); border-radius: 4px;"></div>
         </div>
         <p style="color: var(--color-text-secondary);">
-            {milestone_level}/{len(path['milestones'])} Milestones Completed
+            {milestone_level}/{len(path['milestones'])} {tr('milestones_completed')}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -316,11 +317,16 @@ def show_learning_module(path_id, milestone_level=None):
     # Show educational content based on milestone
     st.markdown(f"""
     <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color: var(--color-primary); margin-bottom: 15px;">Learning Material</h3>
+        <h3 style="color: var(--color-primary); margin-bottom: 15px;">{tr('learning_material')}</h3>
     """, unsafe_allow_html=True)
     
     # Create tabs for different types of learning content
-    ed_tabs = st.tabs(["Concepts", "Pro Tips", "Real-World Examples", "Interactive Practice"])
+    ed_tabs = st.tabs([
+        tr("concepts_tab"),
+        tr("pro_tips_tab"),
+        tr("real_world_examples_tab"),
+        tr("interactive_practice_tab")
+    ])
     
     with ed_tabs[0]:  # Concepts tab
         # Show info if available, otherwise show skill description
@@ -413,7 +419,7 @@ def show_learning_module(path_id, milestone_level=None):
             for tip in tips:
                 display_pro_tip(tip)
         else:
-            st.info("No pro tips available for this skill level yet.")
+            st.info(tr("no_pro_tips_available"))
     
     with ed_tabs[2]:  # Real-World Examples tab
         # Show real-world applications
@@ -421,7 +427,7 @@ def show_learning_module(path_id, milestone_level=None):
         if applications and lang in applications:
             st.markdown(applications[lang])
         else:
-            st.info("No real-world examples available for this skill level yet.")
+            st.info(tr("no_real_world_examples_available"))
     
     with ed_tabs[3]:  # Interactive Practice tab
         # Show interactive practice exercises
@@ -433,8 +439,8 @@ def show_learning_module(path_id, milestone_level=None):
     # Show practice games section
     st.markdown(f"""
     <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color: var(--color-primary); margin-bottom: 15px;">Practice Games</h3>
-        <p>Play these games to improve your skills and advance to the next milestone:</p>
+        <h3 style="color: var(--color-primary); margin-bottom: 15px;">{tr('practice_games')}</h3>
+        <p>{tr('practice_games_instruction')}</p>
     """, unsafe_allow_html=True)
     
     # List games for this milestone
@@ -455,13 +461,13 @@ def show_learning_module(path_id, milestone_level=None):
                 <div style="flex: 1;">
                     <h4 style="margin: 0 0 5px 0;">{game_name}</h4>
                     <p style="margin: 0 0 10px 0; color: var(--color-text-secondary);">{game_desc}</p>
-                    <p style="margin: 0;">Target Score: {milestone.get("min_score", 0)}</p>
+                    <p style="margin: 0;">{tr('target_score')}: {milestone.get("min_score", 0)}</p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
             # Play button with unique key including path and milestone info
-            play_text = "Play Game" if lang == "en" else "Mainkan"
+            play_text = tr("play_game")
             unique_key = f"learning_path_{path_id}_milestone_{milestone_level}_play_{game_id}"
             if st.button(play_text, key=unique_key):
                 st.session_state.current_game = game_id
@@ -473,8 +479,8 @@ def show_learning_module(path_id, milestone_level=None):
     if milestone.get("certificate", False):
         st.markdown(f"""
         <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="color: var(--color-primary); margin-bottom: 15px;">Skill Certificate</h3>
-            <p>Complete this milestone to earn your certificate in {path_name}!</p>
+            <h3 style="color: var(--color-primary); margin-bottom: 15px;">{tr('skill_certificate')}</h3>
+            <p>{tr('skill_certificate_instruction')}</p>
         """, unsafe_allow_html=True)
         
         # Check if certificate is already earned
@@ -487,7 +493,7 @@ def show_learning_module(path_id, milestone_level=None):
             display_certificate_preview(path_id, milestone_level)
         else:
             # Show certificate requirements
-            requirements_text = "Requirements" if lang == "en" else "Persyaratan"
+            requirements_text = tr("requirements")
             st.markdown(f"#### {requirements_text}")
             
             # List games and required scores
@@ -495,7 +501,7 @@ def show_learning_module(path_id, milestone_level=None):
                 game_info = get_game_info(game_id)
                 if game_info:
                     game_name = game_info["name"][lang] if lang in game_info["name"] else game_info["name"]["en"]
-                    st.markdown(f"- {game_name}: Score at least {milestone.get('min_score', 0)} points")
+                    st.markdown(f"- {game_name}: {tr('score_at_least')} {milestone.get('min_score', 0)} {tr('points')}")
         
         st.markdown("</div>", unsafe_allow_html=True)
     
@@ -503,7 +509,7 @@ def show_learning_module(path_id, milestone_level=None):
     st.markdown("<div style='display: flex; justify-content: space-between;'>", unsafe_allow_html=True)
     
     # Back button
-    back_text = "Back to Learning Paths" if lang == "en" else "Kembali ke Jalur Pembelajaran"
+    back_text = tr("back_to_learning_paths")
     if st.button(back_text, key="back_to_paths"):
         st.session_state.selected_learning_path = None
         st.session_state.selected_milestone = None
@@ -526,8 +532,8 @@ def show_learning_paths():
     # Show paths overview
     st.markdown(f"""
     <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h2 style="color: var(--color-primary); margin-bottom: 10px;">Learning Paths</h2>
-        <p>Choose a learning path to improve your shop management skills:</p>
+        <h2 style="color: var(--color-primary); margin-bottom: 10px;">{tr('learning_paths_title')}</h2>
+        <p>{tr('choose_learning_path_instruction')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -546,8 +552,8 @@ def show_learning_paths():
             progress = get_path_progress(path_id)
             
             # Get path details
-            path_name = path["name"][lang] if lang in path["name"] else path["name"]["en"]
-            path_desc = path["description"][lang] if lang in path["description"] else path["description"]["en"]
+            path_name = path["name"][lang]
+            path_desc = path["description"][lang]
             path_icon = path["icon"]
             
             # Create card for this path
@@ -559,7 +565,7 @@ def show_learning_paths():
                     <div>
                         <h3 style="margin: 0;">{path_name}</h3>
                         <p style="color: var(--color-text-secondary); margin: 5px 0 0 0;">
-                            Level {int(progress["current_level"]) + 1}/5
+                            {tr('level_label')} {int(progress["current_level"]) + 1}/5
                         </p>
                     </div>
                 </div>
@@ -572,7 +578,8 @@ def show_learning_paths():
             """, unsafe_allow_html=True)
             
             # Continue button
-            continue_text = "Continue Learning" if lang == "en" else "Lanjutkan Pembelajaran"
+            continue_text = tr("continue_learning")
             if st.button(continue_text, key=f"continue_{path_id}"):
                 st.session_state.selected_learning_path = path_id
+                st.session_state.selected_milestone = None
                 st.rerun()

@@ -4,40 +4,41 @@ Provides reusable tooltip components for explaining game mechanics.
 """
 import streamlit as st
 from utils.config import get_config
+from utils.i18n import tr
 
 # Dictionary of tooltips for different game mechanics
 GAME_MECHANICS = {
     "inventory_counting": {
-        "en": "Count the items shown and enter the correct total. Be careful with similar-looking items.",
-        "id": "Hitung item yang ditampilkan dan masukkan total yang benar. Hati-hati dengan item yang terlihat mirip."
+        "en": tr("tooltip_inventory_counting"),
+        "id": tr("tooltip_inventory_counting_id")
     },
     "change_making": {
-        "en": "Calculate the correct change using Indonesian Rupiah denominations. Aim for speed and accuracy.",
-        "id": "Hitung kembalian yang benar menggunakan denominasi Rupiah Indonesia. Usahakan kecepatan dan akurasi."
+        "en": tr("tooltip_change_making"),
+        "id": tr("tooltip_change_making_id")
     },
     "margin_calculator": {
-        "en": "Set prices to achieve target profit margins. Consider both costs and market competition.",
-        "id": "Tetapkan harga untuk mencapai margin keuntungan target. Pertimbangkan biaya dan persaingan pasar."
+        "en": tr("tooltip_margin_calculator"),
+        "id": tr("tooltip_margin_calculator_id")
     },
     "inventory_management": {
-        "en": "Track stock levels accurately to prevent stockouts and excess inventory.",
-        "id": "Lacak tingkat stok secara akurat untuk mencegah kehabisan stok dan kelebihan inventaris."
+        "en": tr("tooltip_inventory_management"),
+        "id": tr("tooltip_inventory_management_id")
     },
     "cash_handling": {
-        "en": "Manage cash transactions accurately to maintain proper financial records.",
-        "id": "Kelola transaksi tunai secara akurat untuk mempertahankan catatan keuangan yang tepat."
+        "en": tr("tooltip_cash_handling"),
+        "id": tr("tooltip_cash_handling_id")
     },
     "pricing_strategy": {
-        "en": "Set optimal prices that balance profitability and competitive positioning.",
-        "id": "Tetapkan harga optimal yang menyeimbangkan profitabilitas dan posisi kompetitif."
+        "en": tr("tooltip_pricing_strategy"),
+        "id": tr("tooltip_pricing_strategy_id")
     },
     "shop_level": {
-        "en": "Your shop level increases as you improve your skills. Higher levels unlock new features.",
-        "id": "Level toko Anda meningkat seiring peningkatan keterampilan Anda. Level lebih tinggi membuka fitur baru."
+        "en": tr("tooltip_shop_level"),
+        "id": tr("tooltip_shop_level_id")
     },
     "achievement": {
-        "en": "Complete specific goals to earn achievements and track your progress.",
-        "id": "Selesaikan tujuan tertentu untuk mendapatkan prestasi dan melacak kemajuan Anda."
+        "en": tr("tooltip_achievement"),
+        "id": tr("tooltip_achievement_id")
     }
 }
 
@@ -78,13 +79,13 @@ def show_educational_tooltip(text, title=None, place="top"):
     Returns:
         str: HTML for the tooltip
     """
-    title_html = f'<div style="font-weight: bold; margin-bottom: 5px;">{title}</div>' if title else ''
+    title_html = f'<div style="font-weight: bold; margin-bottom: 5px;">{tr(title)}</div>' if title else ''
     
     html = f"""
     <div class="tooltip-container">
         <span style="cursor: help; border-bottom: 1px dotted #666; margin: 0 5px;">?</span>
         <div class="tooltip tooltip-{place} tooltip-educational">
-            {title_html}{text}
+            {title_html}{tr(text)}
         </div>
     </div>
     """
@@ -113,7 +114,7 @@ def show_mechanics_tooltip_button(mechanic_id, button_text="How to Play", game_i
         st.session_state[key] = False
     
     # Create button to toggle tooltip
-    if st.button(button_text, key=f"btn_{key}"):
+    if st.button(tr(button_text), key=f"btn_{key}"):
         st.session_state[key] = not st.session_state[key]
     
     # Show tooltip if enabled
@@ -121,7 +122,7 @@ def show_mechanics_tooltip_button(mechanic_id, button_text="How to Play", game_i
         st.info(f"💡 {tooltip_text}")
         
         # Add a close button
-        close_text = "Close" if lang == "en" else "Tutup"
+        close_text = tr("Close") if lang == "en" else tr("Tutup")
         if st.button(close_text, key=f"close_{key}"):
             st.session_state[key] = False
 
@@ -136,7 +137,7 @@ def add_inline_tooltip(text, mechanic_id):
         str: HTML with the text and tooltip
     """
     tooltip_html = show_tooltip(mechanic_id)
-    return f"{text} {tooltip_html}"
+    return f"{tr(text)} {tooltip_html}"
 
 # Function to add educational tooltips to Streamlit elements using JavaScript
 def add_tooltips_to_page():

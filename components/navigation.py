@@ -6,6 +6,7 @@ import time
 from utils.config import get_config, set_config, get_translation, generate_widget_key
 from components.progress_dashboard import show_progress_dashboard
 from components.transitions import slide_transition, section_transition
+from utils.i18n import tr
 
 def inject_custom_css():
     """Inject custom CSS into the Streamlit app."""
@@ -917,11 +918,11 @@ def show_main_menu_tabs():
     """, unsafe_allow_html=True)
     
     tabs = {
-        "games": "Games" if lang == "en" else "Permainan",
-        "learning": "Learning Paths" if lang == "en" else "Jalur Pembelajaran", 
-        "shop": "My Shop" if lang == "en" else "Toko Saya",
-        "skills": "Skills" if lang == "en" else "Keahlian",
-        "achievements": "Achievements" if lang == "en" else "Prestasi"
+        "games": tr('games'),
+        "learning": tr('learning_paths'),
+        "shop": tr('my_shop'),
+        "skills": tr('skills'),
+        "achievements": tr('achievements')
     }
     
     # Create tabs with language-specific labels
@@ -978,43 +979,43 @@ def show_main_menu_tabs():
 
 def show_games_tab():
     """Display the games tab content."""
-    st.markdown("### Available Games")
-    st.write("Choose a game to practice your retail skills:")
+    st.markdown(f"### {tr('available_games')}")
+    st.write(tr('choose_game'))
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         show_game_card(
-            "Inventory Counting",
-            "Keep track of your stock accurately",
-            "Play Inventory Game",
+            tr('inventory_counting'),
+            tr('inventory_counting_desc'),
+            tr('play_inventory_game'),
             "inventory_game",
             "inventory_management"
         )
     
     with col2:
         show_game_card(
-            "Change Making",
-            "Calculate change quickly and accurately",
-            "Play Change Making",
+            tr('change_making'),
+            tr('change_making_desc'),
+            tr('play_change_making'),
             "change_making",
             "cash_handling"
         )
     
     with col3:
         show_game_card(
-            "Margin Calculator",
-            "Set prices and calculate profits",
-            "Play Margin Calculator",
+            tr('margin_calculator'),
+            tr('margin_calculator_desc'),
+            tr('play_margin_calculator'),
             "margin_calculator",
             "pricing_strategy"
         )
     
     with col4:
         show_game_card(
-            "Simple Calculator",
-            "Perform basic arithmetic operations",
-            "Open Simple Calculator",
+            tr('simple_calculator'),
+            tr('simple_calculator_desc'),
+            tr('play_simple_calculator'),
             "simple_calculator",
             "pricing_strategy"
         )
@@ -1025,7 +1026,7 @@ def show_shop_tab():
         st.session_state.shop_level = 1
     
     # Shop level display
-    st.markdown(f'<p class="shop-level">Shop Level: {st.session_state.shop_level}</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="shop-level">{tr("shop_level")} {st.session_state.shop_level}</p>', unsafe_allow_html=True)
     
     # Show shop image based on level
     import os
@@ -1057,7 +1058,7 @@ def show_shop_tab():
             except:
                 font = ImageFont.load_default()
                 
-            level_text = f"Shop Level {level}"
+            level_text = f"{tr('shop_level')} {level}"
             # Different PIL versions have different methods
             try:
                 text_width = draw.textlength(level_text, font=font)
@@ -1075,9 +1076,9 @@ def show_shop_tab():
     
     # Modified approach to use in-memory generated image
     captions = {
-        1: "Your small warung is just starting out.",
-        2: "Your shop has some basic improvements.",
-        3: "Your shop is growing nicely!"
+        1: tr('shop_level_1_caption'),
+        2: tr('shop_level_2_caption'),
+        3: tr('shop_level_3_caption')
     }
     
     # Generate image in memory to avoid file path issues
@@ -1098,7 +1099,7 @@ def show_shop_tab():
     except:
         font = ImageFont.load_default()
     
-    level_text = f"Shop Level {level}"
+    level_text = f"{tr('shop_level')} {level}"
     # Different PIL versions have different methods
     try:
         text_width = draw.textlength(level_text, font=font)
@@ -1123,7 +1124,7 @@ def show_shop_tab():
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Shop Statistics")
+        st.markdown("### {tr('shop_statistics')}")
         
         total_games = len(st.session_state.game_history) if hasattr(st.session_state, 'game_history') else 0
         avg_score = sum(g["score"] for g in st.session_state.game_history) / max(1, total_games) if hasattr(st.session_state, 'game_history') else 0
@@ -1131,24 +1132,24 @@ def show_shop_tab():
         
         st.markdown(f"""
         <div class="shop-stats">
-            <p><strong>Total Score:</strong> {total_score}</p>
-            <p><strong>Games Played:</strong> {total_games}</p>
-            <p><strong>Average Score:</strong> {avg_score:.1f}</p>
+            <p><strong>{tr('total_score')}:</strong> {total_score}</p>
+            <p><strong>{tr('games_played')}:</strong> {total_games}</p>
+            <p><strong>{tr('average_score')}:</strong> {avg_score:.1f}</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         if hasattr(st.session_state, 'game_history') and st.session_state.game_history:
-            st.markdown("### Recent Activity")
+            st.markdown("### {tr('recent_activity')}")
             
             # Get game name mapping
             game_name_map = {
-                "inventory_game": "Inventory Counting",
-                "change_making": "Change Making",
-                "margin_calculator": "Margin Calculator",
-                "customer_service": "Customer Service",
-                "cash_reconciliation": "Cash Reconciliation",
-                "simple_accounting": "Simple Accounting"
+                "inventory_game": tr('inventory_counting'),
+                "change_making": tr('change_making'),
+                "margin_calculator": tr('margin_calculator'),
+                "customer_service": tr('customer_service'),
+                "cash_reconciliation": tr('cash_reconciliation'),
+                "simple_accounting": tr('simple_accounting')
             }
             
             # Show latest games
@@ -1162,7 +1163,7 @@ def show_shop_tab():
 
 def show_skills_tab():
     """Display the skills tab content."""
-    st.markdown("### Your Skills")
+    st.markdown("### {tr('your_skills')}")
     
     from utils.skills import SKILL_DEFINITIONS, get_skill_name, get_skill_icon, get_skill_description
     
@@ -1217,7 +1218,7 @@ def show_skill_details(skill_id):
             {skill_desc}
         </div>
         <div style="margin-top: 5px;">
-            <strong>Level:</strong> {skill_level:.1f}/{max_level}
+            <strong>{tr('level')}:</strong> {skill_level:.1f}/{max_level}
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1243,7 +1244,7 @@ def show_achievements_tab():
     show_certificates_tab()
     
     # Then show achievements
-    st.markdown("### Your Achievements")
+    st.markdown(f"### {tr('your_achievements')}")
     
     # Get language
     lang = get_config("app.default_language") or "en"
@@ -1262,20 +1263,20 @@ def show_achievements_tab():
     
     # If no achievements yet, show a message
     if not earned_ids:
-        st.info("You haven't earned any achievements yet. Play games to unlock achievements!")
+        st.info(tr('no_achievements_yet'))
     
     # Create a container for earned achievements
-    st.markdown("#### Earned Achievements")
+    st.markdown("#### {tr('earned_achievements')}")
     earned_container = st.container()
     
     # Create a container for locked achievements
-    st.markdown("#### Locked Achievements")
+    st.markdown("#### {tr('locked_achievements')}")
     locked_container = st.container()
     
     # Display earned achievements
     with earned_container:
         if not earned_ids:
-            st.write("No achievements earned yet. Keep playing to earn your first achievement!")
+            st.write(tr('no_achievements_earned'))
         else:
             # Display all earned achievements
             for achievement in st.session_state.achievements:
@@ -1296,7 +1297,7 @@ def show_achievements_tab():
                 show_locked_achievement(achievement_data)
         
         if locked_count == 0:
-            st.success("Congratulations! You've unlocked all achievements! 🎉")
+            st.success(tr('all_achievements_unlocked'))
 
 def show_locked_achievement(achievement):
     """Display a locked achievement.
@@ -1344,7 +1345,7 @@ def show_locked_achievement(achievement):
         <div class="achievement-details">
             <span class="achievement-name">{achievement['name']}</span>
             <p class="achievement-description">{achievement['description']}</p>
-            <span class="achievement-date">Locked - Complete the challenge to unlock</span>
+            <span class="achievement-date">{tr('locked_achievement')}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1364,10 +1365,10 @@ def show_welcome_screen():
         
         with col2:
             lang = get_config("app.default_language") or "en"
-            welcome_text = "Welcome to Toko Pintar!" if lang == "en" else "Selamat Datang di Toko Pintar!"
-            desc_text = "Learn financial and operational skills while running your own small shop." if lang == "en" else "Pelajari keterampilan keuangan dan operasional sambil menjalankan toko kecil Anda sendiri."
-            name_label = "What's your name?" if lang == "en" else "Siapa nama Anda?"
-            button_text = "Start Game" if lang == "en" else "Mulai Permainan"
+            welcome_text = tr('welcome_text')
+            desc_text = tr('welcome_description')
+            name_label = tr('name_label')
+            button_text = tr('start_game')
             
             st.markdown(f"### {welcome_text}")
             st.write(desc_text)
@@ -1395,5 +1396,5 @@ def show_welcome_screen():
                     st.session_state.game_history = []
                     st.session_state.shop_level = 1
                     
-                    st.success(f"Welcome, {st.session_state.player_name}! Let's get started.")
+                    st.success(f"{tr('welcome_success')} {st.session_state.player_name}!")
                     st.rerun()

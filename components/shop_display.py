@@ -4,6 +4,7 @@ Shop visualization components for Toko Pintar application.
 import streamlit as st
 from utils.config import get_config
 from components.progress_dashboard import display_shop_growth_visualization
+from utils.i18n import tr
 
 def display_shop(level=None):
     """Display a visual representation of the shop based on level.
@@ -151,7 +152,7 @@ def display_shop_inventory(products=None):
         products = db.get_products()
     
     if not products:
-        st.info("No products in inventory yet.")
+        st.info(tr("no_products"))
         return
     
     # Get language preference
