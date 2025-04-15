@@ -1,0 +1,254 @@
+/* 
+ * Toko Pintar - Tooltips and Popovers Component
+ * Part of the Visual Design System (Phase 1)
+ */
+
+/* Base Tooltip */
+.tooltip {
+  --tooltip-bg: var(--color-text);
+  --tooltip-color: white;
+  --tooltip-arrow-size: 6px;
+  --tooltip-max-width: 200px;
+  --tooltip-padding: var(--spacing-xs) var(--spacing-sm);
+  --tooltip-border-radius: var(--border-radius-sm);
+  --tooltip-font-size: var(--font-size-xs);
+  --tooltip-z-index: 1000;
+  
+  position: absolute;
+  background-color: var(--tooltip-bg);
+  color: var(--tooltip-color);
+  padding: var(--tooltip-padding);
+  border-radius: var(--tooltip-border-radius);
+  font-size: var(--tooltip-font-size);
+  max-width: var(--tooltip-max-width);
+  z-index: var(--tooltip-z-index);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: var(--tooltip-arrow-size);
+}
+
+/* Tooltip Positions */
+.tooltip-top {
+  bottom: calc(100% + var(--tooltip-arrow-size));
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.tooltip-top::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: var(--tooltip-bg) transparent transparent transparent;
+}
+
+.tooltip-bottom {
+  top: calc(100% + var(--tooltip-arrow-size));
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+}
+
+.tooltip-bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: transparent transparent var(--tooltip-bg) transparent;
+}
+
+.tooltip-left {
+  right: calc(100% + var(--tooltip-arrow-size));
+  top: 50%;
+  transform: translateY(-50%) translateX(-5px);
+}
+
+.tooltip-left::after {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-color: transparent transparent transparent var(--tooltip-bg);
+}
+
+.tooltip-right {
+  left: calc(100% + var(--tooltip-arrow-size));
+  top: 50%;
+  transform: translateY(-50%) translateX(5px);
+}
+
+.tooltip-right::after {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-color: transparent var(--tooltip-bg) transparent transparent;
+}
+
+/* Tooltip Visibility */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-container:hover .tooltip,
+.tooltip-container:focus .tooltip,
+.tooltip.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-container:hover .tooltip-right,
+.tooltip-container:focus .tooltip-right,
+.tooltip-right.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+.tooltip-container:hover .tooltip-left,
+.tooltip-container:focus .tooltip-left,
+.tooltip-left.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+.tooltip-container:hover .tooltip-bottom,
+.tooltip-container:focus .tooltip-bottom,
+.tooltip-bottom.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Educational Tooltips */
+.tooltip-educational {
+  --tooltip-bg: var(--color-tip);
+  --tooltip-color: var(--color-tip-dark);
+  max-width: 250px;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.tooltip-educational::before {
+  content: "💡";
+  margin-right: var(--spacing-xs);
+}
+
+/* Popovers - Larger, interactive tooltip variants */
+.popover {
+  --popover-bg: white;
+  --popover-color: var(--color-text);
+  --popover-border-color: var(--color-gray-300);
+  --popover-arrow-size: 8px;
+  --popover-max-width: 300px;
+  --popover-padding: var(--spacing-sm);
+  --popover-border-radius: var(--border-radius-md);
+  --popover-font-size: var(--font-size-sm);
+  --popover-z-index: 1000;
+  
+  position: absolute;
+  background-color: var(--popover-bg);
+  color: var(--popover-color);
+  padding: var(--popover-padding);
+  border-radius: var(--popover-border-radius);
+  font-size: var(--popover-font-size);
+  max-width: var(--popover-max-width);
+  z-index: var(--popover-z-index);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--popover-border-color);
+  pointer-events: none;
+}
+
+.popover.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.popover::after,
+.popover::before {
+  content: '';
+  position: absolute;
+  border-style: solid;
+}
+
+.popover::after {
+  border-width: calc(var(--popover-arrow-size) - 1px);
+}
+
+.popover::before {
+  border-width: var(--popover-arrow-size);
+}
+
+/* Popover Positions */
+.popover-top {
+  bottom: calc(100% + var(--popover-arrow-size));
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.popover-top::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: var(--popover-bg) transparent transparent transparent;
+}
+
+.popover-top::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: var(--popover-border-color) transparent transparent transparent;
+}
+
+/* Continue for other positions and add popover header/footer components */
+.popover-header {
+  padding-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-gray-200);
+  font-weight: var(--font-weight-medium);
+}
+
+.popover-footer {
+  padding-top: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+}
+
+/* Educational Popover */
+.popover-educational {
+  --popover-bg: var(--color-tip-light);
+  --popover-border-color: var(--color-tip);
+  max-width: 320px;
+}
+
+.popover-educational .popover-header {
+  color: var(--color-tip-dark);
+  border-bottom-color: var(--color-tip);
+}
+
+.popover-educational .popover-header::before {
+  content: "💡";
+  margin-right: var(--spacing-xs);
+}
+
+/* Animation for tooltips and popovers */
+@keyframes tooltip-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tooltip-fade {
+  animation: tooltip-fade 0.2s ease-in;
+}

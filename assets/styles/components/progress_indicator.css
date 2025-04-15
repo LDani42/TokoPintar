@@ -1,0 +1,229 @@
+/* 
+ * Toko Pintar - Progress Indicator Component
+ * Provides a persistent progress indicator for users to track their journey
+ */
+
+.progress-dashboard {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Save and Exit button */
+button.save-exit-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button.save-exit-button:hover {
+  background-color: #45a049;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.progress-dashboard-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.progress-dashboard-title .icon {
+  margin-right: 10px;
+  font-size: 1.4rem;
+}
+
+.progress-category {
+  margin-bottom: 15px;
+}
+
+.progress-category-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.progress-category-name {
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.progress-category-name .icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.progress-category-value {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.progress-bar-container {
+  height: 8px;
+  background-color: #EEEEEE;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Color coding for different skill types */
+.progress-inventory .progress-bar {
+  background-color: #FF9800; /* Orange for inventory */
+}
+
+.progress-cash .progress-bar {
+  background-color: #4CAF50; /* Green for cash */
+}
+
+.progress-pricing .progress-bar {
+  background-color: #2196F3; /* Blue for pricing */
+}
+
+.progress-customer .progress-bar {
+  background-color: #9C27B0; /* Purple for customer relations */
+}
+
+.progress-bookkeeping .progress-bar {
+  background-color: #F44336; /* Red for bookkeeping */
+}
+
+/* Achievement badging */
+.achievement-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #FFC107;
+  color: white;
+  font-size: 14px;
+  margin-left: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Breadcrumb navigation */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 8px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  padding-right: 8px;
+  content: "/";
+  color: #6c757d;
+}
+
+.breadcrumb-item a {
+  color: #2196F3;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+/* Shop growth visualization */
+.shop-growth-visualization {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120px;
+  padding: 15px 0;
+  position: relative;
+}
+
+.shop-growth-visualization::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ddd;
+}
+
+.shop-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+
+.shop-icon {
+  font-size: 24px;
+  margin-bottom: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.shop-icon.active {
+  transform: scale(1.2);
+}
+
+.shop-level-number {
+  font-weight: 600;
+  color: #666;
+}
+
+.shop-level.active .shop-level-number {
+  color: #FF7043;
+}
+
+.shop-level.completed .shop-level-number {
+  color: #4CAF50;
+}
+
+.shop-level-bar {
+  width: 8px;
+  background-color: #EEEEEE;
+  border-radius: 4px;
+  margin-top: 5px;
+  flex-grow: 1;
+  max-height: 60px;
+}
+
+.shop-level.active .shop-level-bar {
+  background-color: #FF7043;
+}
+
+.shop-level.completed .shop-level-bar {
+  background-color: #4CAF50;
+}

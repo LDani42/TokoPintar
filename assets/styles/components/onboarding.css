@@ -1,0 +1,442 @@
+/* 
+ * Toko Pintar - Onboarding Components
+ * Part of the Visual Design System (Phase 2)
+ */
+
+/* Onboarding container */
+.onboarding-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Horizontal step progress */
+.step-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 30px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step-progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step-progress-item::before, 
+.step-progress-item::after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  height: 3px;
+  background-color: #E0E0E0;
+  z-index: 1;
+}
+
+.step-progress-item::before {
+  left: 0;
+  right: 50%;
+}
+
+.step-progress-item::after {
+  right: 0;
+  left: 50%;
+}
+
+.step-progress-item:first-child::before,
+.step-progress-item:last-child::after {
+  display: none;
+}
+
+.step-progress-item.complete::before,
+.step-progress-item.complete::after,
+.step-progress-item.active::before {
+  background-color: var(--color-primary);
+}
+
+.step-progress-indicator {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #E0E0E0;
+  color: #757575;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.step-progress-item.active .step-progress-indicator {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transform: scale(1.15);
+  animation: pulse 1.5s infinite;
+}
+
+.step-progress-item.complete .step-progress-indicator {
+  background-color: var(--color-success);
+  color: white;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1.15); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1.15); }
+}
+
+.step-progress-label {
+  font-weight: 500;
+  color: #757575;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+
+.step-progress-item.active .step-progress-label {
+  color: var(--color-primary);
+  font-weight: 600;
+  transform: translateY(2px);
+  transition: transform 0.3s ease;
+}
+
+.step-progress-item.complete .step-progress-label {
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+/* Onboarding header */
+.onboarding-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.onboarding-header h1 {
+  color: var(--color-primary);
+  font-size: var(--font-size-xxl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.onboarding-header p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Onboarding carousel */
+.onboarding-carousel {
+  position: relative;
+  margin: var(--spacing-xl) 0;
+}
+
+.carousel-slide {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  position: relative;
+}
+
+/* Character creation */
+.character-creation {
+  background-color: var(--color-background-elevated);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.character-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-md);
+  font-size: 3rem;
+}
+
+/* Feature showcase */
+.feature-showcase {
+  margin: var(--spacing-xl) 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-right: var(--spacing-md);
+  color: var(--color-primary);
+  width: 60px;
+  text-align: center;
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-dark);
+}
+
+.feature-description {
+  color: var(--color-text-secondary);
+}
+
+/* Game previews */
+.game-preview {
+  background-color: var(--color-background-elevated);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.game-preview:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.game-preview-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-primary);
+}
+
+.game-preview-description {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+.game-preview-meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Shop stage preview */
+.shop-stage-preview {
+  margin: var(--spacing-xl) 0;
+}
+
+.shop-stage-preview h3 {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.shop-stages {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.shop-stage {
+  flex: 1;
+  text-align: center;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.shop-stage.active {
+  opacity: 1;
+}
+
+.shop-stage-image {
+  height: 150px;
+  background-color: var(--color-gray-100);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.shop-stage-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.shop-stage.active .shop-stage-label {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Completion card */
+.completion-card {
+  text-align: center;
+  background-color: var(--color-background-elevated);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.completion-icon {
+  font-size: 4rem;
+  color: var(--color-success);
+  margin-bottom: var(--spacing-md);
+  animation: bounce 2s infinite;
+}
+
+.completion-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.completion-subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Task list */
+.task-list {
+  text-align: left;
+  max-width: 500px;
+  margin: var(--spacing-lg) auto;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.task-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.task-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.task-description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .onboarding-container {
+    padding: var(--spacing-md);
+    margin: 0;
+    width: 100%;
+  }
+  
+  .feature-item {
+    flex-direction: column;
+  }
+  
+  .feature-icon {
+    margin-bottom: var(--spacing-sm);
+    margin-right: 0;
+  }
+  
+  .shop-stages {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  /* Improve mobile layout */
+  .onboarding-header {
+    margin-bottom: var(--spacing-md);
+    margin-top: 0;
+  }
+  
+  .onboarding-header h1,
+  .onboarding-header h2 {
+    font-size: 1.5rem !important;
+    margin-top: 0;
+  }
+  
+  .onboarding-header p {
+    font-size: 1rem !important;
+  }
+  
+  /* Better mobile layout for skill cards */
+  .feature-showcase {
+    margin: var(--spacing-md) 0;
+  }
+  
+  /* Ensure input fields are full width on mobile */
+  .css-1n76uvr {
+    width: 100% !important;
+  }
+  
+  /* Adjust task list and completion card for mobile */
+  .task-list {
+    padding-left: 0;
+  }
+  
+  .completion-card {
+    padding: var(--spacing-md);
+  }
+}

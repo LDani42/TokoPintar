@@ -1,0 +1,151 @@
+/* 
+ * Toko Pintar - Notifications Component
+ * Part of the Visual Design System (Phase 1)
+ */
+
+.notification {
+  --notification-padding: var(--spacing-md);
+  --notification-border-radius: var(--border-radius-md);
+  --notification-margin: var(--spacing-sm) 0;
+  --notification-font-size: var(--font-size-sm);
+  --notification-border-width: 1px;
+  --notification-transition: all 0.3s ease;
+  
+  display: flex;
+  align-items: center;
+  padding: var(--notification-padding);
+  border-radius: var(--notification-border-radius);
+  margin: var(--notification-margin);
+  font-size: var(--notification-font-size);
+  border-width: var(--notification-border-width);
+  border-style: solid;
+  transition: var(--notification-transition);
+  position: relative;
+}
+
+.notification-icon {
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  margin-left: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: var(--notification-transition);
+  opacity: 0.7;
+}
+
+.notification-close:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Notification Variants */
+.notification-info {
+  background-color: var(--color-info-light);
+  color: var(--color-info-dark);
+  border-color: var(--color-info);
+}
+
+.notification-success {
+  background-color: var(--color-success-light);
+  color: var(--color-success-dark);
+  border-color: var(--color-success);
+}
+
+.notification-warning {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning-dark);
+  border-color: var(--color-warning);
+}
+
+.notification-error {
+  background-color: var(--color-error-light);
+  color: var(--color-error-dark);
+  border-color: var(--color-error);
+}
+
+.notification-achievement {
+  background-color: var(--color-achievement-light);
+  color: var(--color-achievement-dark);
+  border-color: var(--color-achievement);
+  animation: achievement-pulse 2s infinite;
+}
+
+@keyframes achievement-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--color-achievement-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--color-achievement-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--color-achievement-rgb), 0);
+  }
+}
+
+/* Toast notifications that appear and disappear */
+.toast-container {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-width: 350px;
+}
+
+.toast {
+  animation: toast-in-right 0.7s;
+  box-shadow: var(--shadow-md);
+}
+
+.toast.toast-exit {
+  animation: toast-out-right 0.7s forwards;
+}
+
+@keyframes toast-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .toast-container {
+    bottom: calc(var(--spacing-lg) + 60px); /* Account for bottom navigation */
+    right: var(--spacing-sm);
+    left: var(--spacing-sm);
+    align-items: center;
+  }
+  
+  .toast {
+    width: 100%;
+    max-width: 100%;
+  }
+}

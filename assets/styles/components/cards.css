@@ -1,0 +1,194 @@
+/* Card Styles */
+
+.tp-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: var(--transition-medium);
+    border-left: 4px solid var(--primary);
+    margin-bottom: var(--space-md);
+}
+
+.tp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tp-card__header {
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tp-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.tp-card__subtitle {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-top: var(--space-xs);
+}
+
+.tp-card__body {
+    padding: var(--space-md);
+}
+
+.tp-card__footer {
+    padding: var(--space-md);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* Card variants */
+.tp-card--primary {
+    border-left-color: var(--primary);
+}
+
+.tp-card--primary .tp-card__title {
+    color: var(--primary);
+}
+
+.tp-card--secondary {
+    border-left-color: var(--secondary);
+}
+
+.tp-card--secondary .tp-card__title {
+    color: var(--secondary);
+}
+
+.tp-card--inventory {
+    border-left-color: var(--inventory-color);
+}
+
+.tp-card--inventory .tp-card__title {
+    color: var(--inventory-color);
+}
+
+.tp-card--cash {
+    border-left-color: var(--cash-color);
+}
+
+.tp-card--cash .tp-card__title {
+    color: var(--cash-color);
+}
+
+.tp-card--pricing {
+    border-left-color: var(--pricing-color);
+}
+
+.tp-card--pricing .tp-card__title {
+    color: var(--pricing-color);
+}
+
+.tp-card--customer {
+    border-left-color: var(--customers-color);
+}
+
+.tp-card--customer .tp-card__title {
+    color: var(--customers-color);
+}
+
+/* Interactive game card */
+.tp-game-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: var(--transition-medium);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--border-light);
+}
+
+.tp-game-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.tp-game-card__image {
+    width: 100%;
+    height: 140px;
+    background-color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--text-light);
+}
+
+.tp-game-card__icon {
+    font-size: 48px;
+}
+
+.tp-game-card__content {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.tp-game-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+    color: var(--primary);
+}
+
+.tp-game-card__description {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    flex-grow: 1;
+}
+
+.tp-game-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tp-game-card__level {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+}
+
+.tp-game-card__skill {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+/* Game card variants */
+.tp-game-card--inventory .tp-game-card__image {
+    background-color: var(--inventory-color);
+}
+
+.tp-game-card--cash .tp-game-card__image {
+    background-color: var(--cash-color);
+}
+
+.tp-game-card--pricing .tp-game-card__image {
+    background-color: var(--pricing-color);
+}
+
+.tp-game-card--customer .tp-game-card__image {
+    background-color: var(--customers-color);
+}

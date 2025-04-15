@@ -1,0 +1,16 @@
+{
+    "app": {
+        "title": "Toko Pintar - Financial Literacy Game",
+        "version": "0.2.0",
+        "default_language": "en"
+    },
+    "gameplay": {
+        "max_skill_level": 5,
+        "skill_increase_amount": 0.2,
+        "shop_level_threshold": 1.0
+    },
+    "debug": {
+        "enabled": false,
+        "log_level": "INFO"
+    }
+}

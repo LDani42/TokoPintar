@@ -1,0 +1,41 @@
+.inventory-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  width: 100%;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inventory-card-emoji {
+  font-size: 2.2rem;
+  margin-right: 14px;
+}
+.inventory-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.inventory-card-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.inventory-card-count {
+  color: #888;
+  font-size: 0.98rem;
+}
+@media (max-width: 600px) {
+  .inventory-card {
+    max-width: 98vw;
+    padding: 10px 6px;
+  }
+  .inventory-card-emoji {
+    font-size: 1.6rem;
+    margin-right: 10px;
+  }
+}

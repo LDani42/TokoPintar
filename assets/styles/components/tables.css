@@ -1,0 +1,260 @@
+/* 
+ * Toko Pintar - Tables Component
+ * Part of the Visual Design System (Phase 1)
+ */
+
+/* Base Table */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  --table-border-color: var(--color-gray-300);
+  --table-header-bg: var(--color-gray-100);
+  --table-header-color: var(--color-text-dark);
+  --table-row-bg: white;
+  --table-row-hover-bg: var(--color-gray-50);
+  --table-cell-padding: var(--spacing-sm) var(--spacing-md);
+  --table-font-size: var(--font-size-sm);
+  
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--table-font-size);
+  background-color: var(--table-row-bg);
+  border: 1px solid var(--table-border-color);
+}
+
+.table th,
+.table td {
+  padding: var(--table-cell-padding);
+  border-bottom: 1px solid var(--table-border-color);
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--table-header-bg);
+  color: var(--table-header-color);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  font-size: calc(var(--table-font-size) * 0.95);
+  letter-spacing: 0.5px;
+}
+
+.table tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: var(--table-row-hover-bg);
+}
+
+/* Table Styles */
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid var(--table-border-color);
+}
+
+.table-striped tbody tr:nth-child(odd) {
+  background-color: var(--color-gray-50);
+}
+
+.table-striped tbody tr:nth-child(even) {
+  background-color: var(--table-row-bg);
+}
+
+.table-compact {
+  --table-cell-padding: var(--spacing-xs) var(--spacing-sm);
+  --table-font-size: calc(var(--font-size-sm) * 0.9);
+}
+
+/* Table cell alignments */
+.table .text-left {
+  text-align: left;
+}
+
+.table .text-center {
+  text-align: center;
+}
+
+.table .text-right {
+  text-align: right;
+}
+
+/* Table with sticky header */
+.table-sticky-header {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.table-sticky-header table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-shadow: 0 1px 0 0 var(--table-border-color);
+}
+
+/* Responsive Tables */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+  }
+  
+  .table-responsive thead {
+    display: none;
+  }
+  
+  .table-responsive tbody, 
+  .table-responsive tr, 
+  .table-responsive td {
+    display: block;
+    width: 100%;
+  }
+  
+  .table-responsive tr {
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--table-border-color);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xs);
+  }
+  
+  .table-responsive td {
+    position: relative;
+    padding-left: 50%;
+    text-align: right;
+    border: none;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+  
+  .table-responsive td:last-child {
+    border-bottom: none;
+  }
+  
+  .table-responsive td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: var(--spacing-sm);
+    top: var(--spacing-sm);
+    font-weight: var(--font-weight-semibold);
+    text-align: left;
+  }
+}
+
+/* Inventory Table Specific Styles */
+.table-inventory .product-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.table-inventory .product-icon {
+  font-size: 1.5em;
+}
+
+.table-inventory .stock-status {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.85em;
+  font-weight: var(--font-weight-medium);
+}
+
+.table-inventory .in-stock {
+  background-color: var(--color-success-light);
+  color: var(--color-success-dark);
+}
+
+.table-inventory .low-stock {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning-dark);
+}
+
+.table-inventory .out-of-stock {
+  background-color: var(--color-error-light);
+  color: var(--color-error-dark);
+}
+
+/* Financial Table Specific Styles */
+.table-financial .price-change-positive {
+  color: var(--color-success);
+}
+
+.table-financial .price-change-negative {
+  color: var(--color-error);
+}
+
+.table-financial .currency {
+  font-family: var(--font-family-mono);
+  white-space: nowrap;
+}
+
+.table-financial .profit-margin {
+  font-weight: var(--font-weight-medium);
+}
+
+/* Action Buttons in Tables */
+.table-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  justify-content: flex-end;
+}
+
+.table-action-btn {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-action-btn:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-primary);
+}
+
+/* Table Sorting */
+.table-sortable th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-sortable th.sort-asc:after {
+  content: " ↑";
+  color: var(--color-primary);
+}
+
+.table-sortable th.sort-desc:after {
+  content: " ↓";
+  color: var(--color-primary);
+}
+
+/* Table for game results */
+.table-game-results {
+  --table-header-bg: var(--color-primary-light);
+  --table-header-color: var(--color-primary-dark);
+}
+
+.table-game-results .score-cell {
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.table-game-results .correct-answer {
+  color: var(--color-success);
+}
+
+.table-game-results .wrong-answer {
+  color: var(--color-error);
+}

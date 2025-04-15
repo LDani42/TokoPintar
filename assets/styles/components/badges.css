@@ -1,0 +1,424 @@
+/* 
+ * Toko Pintar - Badges and Tags Component
+ * Part of the Visual Design System (Phase 1)
+ */
+
+/* Base Badge */
+.badge {
+  --badge-padding: 0.25rem 0.5rem;
+  --badge-border-radius: var(--border-radius-pill);
+  --badge-font-size: var(--font-size-xs);
+  --badge-font-weight: var(--font-weight-medium);
+  --badge-bg: var(--color-primary);
+  --badge-color: white;
+  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--badge-padding);
+  border-radius: var(--badge-border-radius);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Badge Variants */
+.badge-primary {
+  --badge-bg: var(--color-primary);
+  --badge-color: white;
+}
+
+.badge-secondary {
+  --badge-bg: var(--color-secondary);
+  --badge-color: white;
+}
+
+.badge-success {
+  --badge-bg: var(--color-success);
+  --badge-color: white;
+}
+
+.badge-info {
+  --badge-bg: var(--color-info);
+  --badge-color: white;
+}
+
+.badge-warning {
+  --badge-bg: var(--color-warning);
+  --badge-color: var(--color-text-dark);
+}
+
+.badge-error {
+  --badge-bg: var(--color-error);
+  --badge-color: white;
+}
+
+.badge-achievement {
+  --badge-bg: var(--color-achievement);
+  --badge-color: white;
+}
+
+/* Outlined Badge variants */
+.badge-outline {
+  background-color: transparent;
+  border: 1px solid currentColor;
+}
+
+.badge-outline-primary {
+  color: var(--color-primary);
+}
+
+.badge-outline-secondary {
+  color: var(--color-secondary);
+}
+
+.badge-outline-success {
+  color: var(--color-success);
+}
+
+.badge-outline-info {
+  color: var(--color-info);
+}
+
+.badge-outline-warning {
+  color: var(--color-warning);
+}
+
+.badge-outline-error {
+  color: var(--color-error);
+}
+
+.badge-outline-achievement {
+  color: var(--color-achievement);
+}
+
+/* Badge Sizes */
+.badge-sm {
+  --badge-padding: 0.15rem 0.4rem;
+  --badge-font-size: calc(var(--font-size-xs) * 0.85);
+}
+
+.badge-lg {
+  --badge-padding: 0.35rem 0.7rem;
+  --badge-font-size: var(--font-size-sm);
+}
+
+/* Pill Badge (fully rounded) */
+.badge-pill {
+  --badge-border-radius: 9999px;
+}
+
+/* Badge with icon */
+.badge-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-icon {
+  font-size: 1.1em;
+}
+
+/* Status badges */
+.badge-status {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.badge-status::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Badge counter (for notifications) */
+.badge-counter {
+  --badge-padding: 0.2rem 0.4rem;
+  --badge-border-radius: 9999px;
+  min-width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* Badge positioned absolutely */
+.badge-position {
+  position: absolute;
+  z-index: 1;
+}
+
+.badge-top-right {
+  top: -0.5rem;
+  right: -0.5rem;
+}
+
+.badge-top-left {
+  top: -0.5rem;
+  left: -0.5rem;
+}
+
+.badge-bottom-right {
+  bottom: -0.5rem;
+  right: -0.5rem;
+}
+
+.badge-bottom-left {
+  bottom: -0.5rem;
+  left: -0.5rem;
+}
+
+/* Tags (similar to badges but more interactive) */
+.tag {
+  --tag-padding: 0.35rem 0.7rem;
+  --tag-border-radius: var(--border-radius-md);
+  --tag-font-size: var(--font-size-sm);
+  --tag-font-weight: var(--font-weight-normal);
+  --tag-bg: var(--color-gray-100);
+  --tag-color: var(--color-text);
+  --tag-border-color: var(--color-gray-300);
+  
+  display: inline-flex;
+  align-items: center;
+  padding: var(--tag-padding);
+  border-radius: var(--tag-border-radius);
+  font-size: var(--tag-font-size);
+  font-weight: var(--tag-font-weight);
+  background-color: var(--tag-bg);
+  color: var(--tag-color);
+  border: 1px solid var(--tag-border-color);
+  white-space: nowrap;
+  vertical-align: middle;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background-color: var(--color-gray-200);
+}
+
+/* Closable Tag */
+.tag-closable {
+  padding-right: 0.35rem;
+}
+
+.tag-close {
+  margin-left: 0.35rem;
+  font-size: 0.85em;
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.tag-close:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Tag variants */
+.tag-primary {
+  --tag-bg: var(--color-primary-light);
+  --tag-color: var(--color-primary-dark);
+  --tag-border-color: var(--color-primary);
+}
+
+.tag-secondary {
+  --tag-bg: var(--color-secondary-light);
+  --tag-color: var(--color-secondary-dark);
+  --tag-border-color: var(--color-secondary);
+}
+
+.tag-success {
+  --tag-bg: var(--color-success-light);
+  --tag-color: var(--color-success-dark);
+  --tag-border-color: var(--color-success);
+}
+
+.tag-warning {
+  --tag-bg: var(--color-warning-light);
+  --tag-color: var(--color-warning-dark);
+  --tag-border-color: var(--color-warning);
+}
+
+.tag-error {
+  --tag-bg: var(--color-error-light);
+  --tag-color: var(--color-error-dark);
+  --tag-border-color: var(--color-error);
+}
+
+.tag-info {
+  --tag-bg: var(--color-info-light);
+  --tag-color: var(--color-info-dark);
+  --tag-border-color: var(--color-info);
+}
+
+/* Tag Group */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Skill Level Tags */
+.tag-skill {
+  display: flex;
+  align-items: center;
+}
+
+.tag-skill-level {
+  display: inline-flex;
+  margin-left: 0.4rem;
+  gap: 0.15rem;
+}
+
+.tag-skill-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--color-gray-300);
+}
+
+.tag-skill-dot.active {
+  background-color: currentColor;
+}
+
+/* Achievement badges */
+.achievement-badge {
+  --badge-size: 4rem;
+  --badge-bg: var(--color-primary-light);
+  --badge-color: var(--color-primary);
+  --badge-border: 2px solid var(--color-primary);
+  --badge-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  width: var(--badge-size);
+  height: var(--badge-size);
+  border-radius: 50%;
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  border: var(--badge-border);
+  box-shadow: var(--badge-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--badge-size) * 0.4);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.achievement-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Achievement badge color variants */
+.achievement-badge-inventory {
+  --badge-bg: rgba(255, 152, 0, 0.2);
+  --badge-color: #FF9800;
+  --badge-border: 2px solid #FF9800;
+}
+
+.achievement-badge-cash {
+  --badge-bg: rgba(76, 175, 80, 0.2);
+  --badge-color: #4CAF50;
+  --badge-border: 2px solid #4CAF50;
+}
+
+.achievement-badge-pricing {
+  --badge-bg: rgba(33, 150, 243, 0.2);
+  --badge-color: #2196F3;
+  --badge-border: 2px solid #2196F3;
+}
+
+.achievement-badge-customer {
+  --badge-bg: rgba(156, 39, 176, 0.2);
+  --badge-color: #9C27B0;
+  --badge-border: 2px solid #9C27B0;
+}
+
+.achievement-badge-bookkeeping {
+  --badge-bg: rgba(244, 67, 54, 0.2);
+  --badge-color: #F44336;
+  --badge-border: 2px solid #F44336;
+}
+
+/* Animated achievement badge */
+@keyframes badge-glow {
+  0% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); }
+}
+
+.achievement-badge-new {
+  animation: badge-glow 2s infinite;
+}
+
+/* Badge tooltip */
+.achievement-badge-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-text);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 100;
+}
+
+.achievement-badge-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-text) transparent transparent transparent;
+}
+
+.achievement-badge:hover .achievement-badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Achievement badge grid display */
+.achievement-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  grid-gap: 1rem;
+  margin: 1rem 0;
+}
+
+/* Locked badge style */
+.achievement-badge-locked {
+  --badge-bg: var(--color-gray-200);
+  --badge-color: var(--color-gray-400);
+  --badge-border: 2px solid var(--color-gray-300);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.achievement-badge-locked::after {
+  content: "🔒";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 1rem;
+}

@@ -1,0 +1,282 @@
+/* Form Elements */
+
+/* Input base styles */
+.tp-input {
+    display: block;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+}
+
+.tp-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.2);
+}
+
+.tp-input::placeholder {
+    color: var(--text-disabled);
+}
+
+.tp-input:disabled {
+    background-color: var(--border-light);
+    cursor: not-allowed;
+}
+
+/* Input with icon */
+.tp-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tp-input-group .tp-input {
+    padding-left: 40px;
+}
+
+.tp-input-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+/* Input sizes */
+.tp-input--small {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-sm);
+    height: 32px;
+}
+
+.tp-input--large {
+    padding: var(--space-md);
+    font-size: var(--text-lg);
+    height: 48px;
+}
+
+/* Form label */
+.tp-label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+}
+
+/* Form group */
+.tp-form-group {
+    margin-bottom: var(--space-lg);
+}
+
+/* Validation states */
+.tp-input--error {
+    border-color: var(--ui-error);
+}
+
+.tp-input--error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.2);
+}
+
+.tp-input--success {
+    border-color: var(--ui-success);
+}
+
+.tp-input--success:focus {
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+}
+
+.tp-validation-message {
+    margin-top: var(--space-xs);
+    font-size: var(--text-xs);
+}
+
+.tp-validation-message--error {
+    color: var(--ui-error);
+}
+
+.tp-validation-message--success {
+    color: var(--ui-success);
+}
+
+/* Select input */
+.tp-select {
+    display: block;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    padding-right: 30px; /* Space for custom arrow */
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: var(--transition-fast);
+}
+
+.tp-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.2);
+}
+
+/* Checkbox and radio styles */
+.tp-checkbox, .tp-radio {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: var(--space-sm);
+}
+
+.tp-checkbox__input, .tp-radio__input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.tp-checkbox__mark {
+    height: 20px;
+    width: 20px;
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    margin-right: var(--space-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition-fast);
+}
+
+.tp-radio__mark {
+    height: 20px;
+    width: 20px;
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-medium);
+    border-radius: 50%;
+    margin-right: var(--space-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition-fast);
+}
+
+.tp-checkbox__input:checked ~ .tp-checkbox__mark {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.tp-radio__input:checked ~ .tp-radio__mark {
+    border-color: var(--primary);
+}
+
+.tp-checkbox__mark:after {
+    content: "";
+    display: none;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.tp-radio__mark:after {
+    content: "";
+    display: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary);
+}
+
+.tp-checkbox__input:checked ~ .tp-checkbox__mark:after,
+.tp-radio__input:checked ~ .tp-radio__mark:after {
+    display: block;
+}
+
+.tp-checkbox__input:focus ~ .tp-checkbox__mark,
+.tp-radio__input:focus ~ .tp-radio__mark {
+    box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.2);
+}
+
+.tp-checkbox__text, .tp-radio__text {
+    font-size: var(--text-sm);
+}
+
+/* Slider/range input */
+.tp-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--border-light);
+    border-radius: var(--radius-full);
+    outline: none;
+}
+
+.tp-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.tp-range::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-fast);
+}
+
+.tp-range::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: var(--primary-dark);
+}
+
+.tp-range::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    background: var(--primary-dark);
+}
+
+/* Currency input */
+.tp-currency-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tp-currency-input__symbol {
+    position: absolute;
+    left: 12px;
+    color: var(--text-secondary);
+    pointer-events: none;
+    font-weight: 600;
+}
+
+.tp-currency-input .tp-input {
+    padding-left: 36px;
+    font-family: var(--font-primary);
+    text-align: right;
+    font-weight: 600;
+}

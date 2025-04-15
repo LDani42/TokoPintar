@@ -1,0 +1,258 @@
+/* 
+ * Toko Pintar - Progress Indicators Component
+ * Part of the Visual Design System (Phase 1)
+ */
+
+/* Base Progress Bar */
+.progress-container {
+  --progress-height: 8px;
+  --progress-radius: var(--border-radius-pill);
+  --progress-bg: var(--color-gray-200);
+  --progress-color: var(--color-primary);
+  --progress-transition: width 0.3s ease;
+  
+  width: 100%;
+  background-color: var(--progress-bg);
+  border-radius: var(--progress-radius);
+  height: var(--progress-height);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--progress-color);
+  border-radius: inherit;
+  transition: var(--progress-transition);
+}
+
+/* Progress Bar with Label */
+.progress-with-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Progress Bar Variants */
+.progress-success .progress-bar {
+  background-color: var(--color-success);
+}
+
+.progress-warning .progress-bar {
+  background-color: var(--color-warning);
+}
+
+.progress-error .progress-bar {
+  background-color: var(--color-error);
+}
+
+.progress-achievement .progress-bar {
+  background-color: var(--color-achievement);
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+  animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+  from {
+    background-position: 1rem 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Progress Bar Sizes */
+.progress-sm {
+  --progress-height: 4px;
+}
+
+.progress-lg {
+  --progress-height: 12px;
+}
+
+.progress-xl {
+  --progress-height: 16px;
+}
+
+/* Circular Progress */
+.circular-progress {
+  --progress-size: 48px;
+  --progress-thickness: 4px;
+  --progress-color: var(--color-primary);
+  --progress-bg: var(--color-gray-200);
+  
+  position: relative;
+  width: var(--progress-size);
+  height: var(--progress-size);
+}
+
+.circular-progress-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.circular-progress-circle {
+  fill: none;
+  stroke-width: var(--progress-thickness);
+  stroke-linecap: round;
+}
+
+.circular-progress-bg {
+  stroke: var(--progress-bg);
+}
+
+.circular-progress-value {
+  stroke: var(--progress-color);
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.circular-progress-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--progress-size) * 0.3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+/* Circular Progress Sizes */
+.circular-progress-sm {
+  --progress-size: 36px;
+  --progress-thickness: 3px;
+}
+
+.circular-progress-lg {
+  --progress-size: 64px;
+  --progress-thickness: 5px;
+}
+
+.circular-progress-xl {
+  --progress-size: 96px;
+  --progress-thickness: 8px;
+}
+
+/* Step Progress Indicator */
+.step-progress {
+  display: flex;
+  width: 100%;
+  margin: var(--spacing-md) 0;
+  position: relative;
+}
+
+.step-progress-item {
+  flex: 1;
+  position: relative;
+  text-align: center;
+}
+
+.step-progress-item:not(:last-child):after {
+  content: '';
+  position: absolute;
+  top: calc(var(--step-size) / 2);
+  left: calc(50% + var(--step-size) / 2);
+  right: calc(50% + var(--step-size) / 2 - 100%);
+  height: 2px;
+  background-color: var(--step-line-color);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.step-progress-indicator {
+  --step-size: 24px;
+  --step-color: var(--color-gray-400);
+  --step-active-color: var(--color-primary);
+  --step-complete-color: var(--color-success);
+  --step-line-color: var(--color-gray-300);
+  
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--step-size);
+  height: var(--step-size);
+  margin: 0 auto var(--spacing-xs);
+  border-radius: 50%;
+  background-color: var(--step-color);
+  color: white;
+  font-size: var(--font-size-sm);
+  transition: background-color 0.3s ease;
+}
+
+.step-progress-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease;
+}
+
+/* Step States */
+.step-progress-item.active .step-progress-indicator {
+  background-color: var(--step-active-color);
+}
+
+.step-progress-item.active .step-progress-label {
+  color: var(--step-active-color);
+  font-weight: var(--font-weight-medium);
+}
+
+.step-progress-item.complete .step-progress-indicator {
+  background-color: var(--step-complete-color);
+}
+
+.step-progress-item.complete .step-progress-label {
+  color: var(--step-complete-color);
+}
+
+.step-progress-item.complete:not(:last-child):after {
+  background-color: var(--step-complete-color);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .step-progress {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .step-progress-item:not(:last-child):after {
+    top: calc(var(--step-size) + var(--spacing-sm));
+    left: calc(var(--step-size) / 2);
+    width: 2px;
+    height: calc(100% - var(--step-size) - var(--spacing-xs));
+    right: auto;
+  }
+  
+  .step-progress-item {
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+  
+  .step-progress-indicator {
+    margin: 0 var(--spacing-sm) 0 0;
+  }
+}
